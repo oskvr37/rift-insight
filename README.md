@@ -2,6 +2,8 @@
 
 Rift Insight is a Next.js application providing detailed League of Legends player stats and insights.
 
+![badge](https://img.shields.io/badge/current_state-in_development-red)
+
 # Installation
 
 Install the dependencies with npm:
