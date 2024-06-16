@@ -1,7 +1,9 @@
+import { queryToString } from "./helpers";
+
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-type REGIONS = "americas" | "asia" | "europe" | "esports";
-type SERVERS =
+export type REGIONS = "americas" | "asia" | "europe" | "esports";
+export type SERVERS =
 	| "BR1"
 	| "EUN1"
 	| "EUW1"
@@ -75,9 +77,7 @@ export async function matchesByPuuid(
 		count?: number;
 	}
 ): Promise<string[]> {
-	const queryString = Object.entries(query || {})
-		.map(([key, value]) => `${key}=${value}`)
-		.join("&");
+	const queryString = queryToString(query || {});
 
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?${queryString}`
@@ -105,5 +105,31 @@ export async function leagueBySummoner(
 > {
 	return await fetchApi(
 		`https://${server}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`
+	);
+}
+
+export async function championMasteryByPuuid(
+	puuid: string,
+	server: SERVERS,
+	query?: {
+		count?: number;
+	}
+): Promise<
+	{
+		puuid: string;
+		championPointsUntilNextLevel: number;
+		chestGranted: boolean;
+		championId: number;
+		lastPlayTime: number;
+		championLevel: number;
+		championPoints: number;
+		championPointsSinceLastLevel: number;
+		tokensEarned: number;
+	}[]
+> {
+	const queryString = queryToString(query || {});
+
+	return await fetchApi(
+		`https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?${queryString}`
 	);
 }
