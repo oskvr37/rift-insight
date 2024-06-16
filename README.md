@@ -4,6 +4,7 @@
 ![tailwindcss badge](https://img.shields.io/badge/tailwindcss-089bdc?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![typescript badge](https://img.shields.io/badge/typescript-3178c6?style=for-the-badge&logo=typescript&logoColor=white)
 ![postgreSQL badge](https://img.shields.io/badge/postgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![jest badge](https://img.shields.io/badge/jest-9b0f1d?style=for-the-badge&logo=jest&logoColor=white)
 
 Rift Insight is a Next.js application providing detailed League of Legends player stats and insights.
 
