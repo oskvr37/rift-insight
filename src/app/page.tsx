@@ -1,6 +1,25 @@
-export default function Page() {
+import prisma from "@/utils/db";
+
+async function Users() {
+	const users = await prisma.user.findMany();
+
 	return (
-		<main>
+		<section className="space-y-4">
+			<h2 className="text-xl">Users</h2>
+			<ul>
+				{users.map((user) => (
+					<li key={user.id}>
+						{user.email} {user.name}
+					</li>
+				))}
+			</ul>
+		</section>
+	);
+}
+
+export default async function Page() {
+	return (
+		<main className="space-y-8">
 			<section className="space-y-4">
 				<h1 className="text-2xl">Check out your stats and insights!</h1>
 				<p className="max-w-96">
@@ -10,6 +29,7 @@ export default function Page() {
 					playstyle.
 				</p>
 			</section>
+			<Users />
 		</main>
 	);
 }
