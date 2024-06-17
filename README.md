@@ -26,6 +26,15 @@ npm run build
 npm run start
 ```
 
+## Database
+
+Rift Insight uses a PostgreSQL database. You need to set an environment variable `DATABASE_URL` with the connection string to your database.
+
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/database
+```
+<!-- TODO: schema sync instructions -->
+
 # Usage
 
 To use Rift Insight, you must have a Riot Games API key.
