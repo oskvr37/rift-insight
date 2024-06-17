@@ -18,29 +18,29 @@ Install the dependencies with npm:
 npm install
 ```
 
-Available scripts:
+## Environment variables
+
+You need to set the following environment variables:
 
 ```bash
-npm run dev
-npm run build
-npm run start
+RIOT_API_KEY="your_riot_api_key"
+DATABASE_URL="postgresql://user:password@localhost:5432/database"
 ```
 
 ## Database
 
-Rift Insight uses a PostgreSQL database. You need to set an environment variable `DATABASE_URL` with the connection string to your database.
+Rift Insight uses a PostgreSQL database. You can run `npx prisma studio` to open the Prisma Studio and interact with the database. Use `npx prisma migrate dev` to sync the database schema with the Prisma schema.
+
+## Usage
+
+Run the development server with `npm run dev` or build the application with `npm run build` and start the server with `npm run start`.
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+# Testing
+
+Run the tests with Jest:
 
 ```bash
-DATABASE_URL=postgresql://user:password@localhost:5432/database
-```
-<!-- TODO: schema sync instructions -->
-
-# Usage
-
-To use Rift Insight, you must have a Riot Games API key.
-You can get one by following the instructions [here](https://developer.riotgames.com/).
-You will also need to create a `.env.local` file in the root directory of the project and add the following line:
-
-```bash
-RIOT_API_KEY=YOUR_API_KEY
+npm run test
 ```
