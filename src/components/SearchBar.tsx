@@ -121,6 +121,8 @@ function addSearchToHistory(search: SearchRecord) {
 	const history = getStorageHistory();
 
 	// remove the oldest search if we reach the limit
+	// FIXME propably not working as long as we are using an object
+	// we should use map instead
 	if (Object.keys(history).length >= LIMIT) {
 		const oldest = Object.keys(history)[0];
 		delete history[oldest];
