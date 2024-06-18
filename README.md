@@ -44,3 +44,7 @@ Run the tests with Jest:
 ```bash
 npm run test
 ```
+
+# Features
+
+Check the [features](docs/FEATURES.md) document for more information.
