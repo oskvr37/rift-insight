@@ -1,4 +1,8 @@
-import SearchBar from "@/components/SearchBar";
+import dynamic from "next/dynamic";
+
+const SearchBar = dynamic(() => import("@/components/SearchBar"), {
+	ssr: false,
+});
 
 export default async function Page() {
 	return (
