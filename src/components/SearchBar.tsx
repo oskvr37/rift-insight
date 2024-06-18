@@ -26,7 +26,14 @@ export default function SearchBar() {
 		const summonerName = split[0];
 		const tagLine = split[1];
 
-		searchUser(summonerName, tagLine, server);
+		searchUser(summonerName, tagLine, server).then(() => {
+			addSearchToHistory({
+				server,
+				normalized_server: serverNormalized,
+				summonerName,
+				tagLine,
+			});
+		});
 	}
 
 	useEffect(() => {
@@ -58,7 +65,8 @@ export default function SearchBar() {
 						required
 						type="text"
 						placeholder={`name#${serverNormalized}`}
-						// pattern for summoner name#tagline
+						// TODO tagline max length is 5
+						// TODO figure out max length for summoner name
 						pattern="^[a-zA-Z0-9 ]+#[a-zA-Z0-9 ]+$"
 						value={inputValue}
 						onChange={(event) => setInputValue(event.target.value)}
@@ -83,4 +91,43 @@ function getStorageServer(): SERVERS {
 
 function setStorageServer(server: SERVERS) {
 	localStorage.setItem("server", server);
+}
+
+// local storage to store search history
+// it is dictionary with the server, normalized server, summoner name and tagline
+// where the key is summoner name and tagline
+
+// TODO convert to a map, to keep the order of the searches
+
+type SearchRecord = {
+	server: SERVERS;
+	normalized_server: SERVERS_NORMALIZED;
+	summonerName: string;
+	tagLine: string;
+};
+
+type SearchHistory = Record<string, SearchRecord>;
+
+export function getStorageHistory(): SearchHistory {
+	return JSON.parse(localStorage.getItem("history") || "{}");
+}
+
+function setStorageHistory(history: SearchHistory) {
+	localStorage.setItem("history", JSON.stringify(history));
+}
+
+function addSearchToHistory(search: SearchRecord) {
+	const LIMIT = 10;
+	const history = getStorageHistory();
+
+	// remove the oldest search if we reach the limit
+	if (Object.keys(history).length >= LIMIT) {
+		const oldest = Object.keys(history)[0];
+		delete history[oldest];
+	}
+
+	const key = `${search.summonerName.toLowerCase()}#${search.tagLine.toLowerCase()}`;
+	history[key] = search;
+
+	setStorageHistory(history);
 }
