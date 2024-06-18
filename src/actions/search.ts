@@ -10,8 +10,10 @@ export async function searchUser(
 	tagLine: string,
 	server: SERVERS
 ) {
-	// validate incoming data
 	// TODO ensure server is valid
+	// TODO ensure gameName and tagLine are valid (regex)
+
+	// validate incoming data
 	if (
 		typeof gameName !== "string" ||
 		typeof tagLine !== "string" ||
