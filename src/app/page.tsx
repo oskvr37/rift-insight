@@ -1,21 +1,12 @@
-import prisma from "@/utils/db";
+import dynamic from "next/dynamic";
 
-async function Users() {
-	const users = await prisma.user.findMany();
+const SearchBar = dynamic(() => import("@/components/SearchBar"), {
+	ssr: false,
+});
 
-	return (
-		<section className="space-y-4">
-			<h2 className="text-xl">Users</h2>
-			<ul>
-				{users.map((user) => (
-					<li key={user.id}>
-						{user.email} {user.name}
-					</li>
-				))}
-			</ul>
-		</section>
-	);
-}
+const SearchHistory = dynamic(() => import("@/components/SearchHistory"), {
+	ssr: false,
+});
 
 export default async function Page() {
 	return (
@@ -29,7 +20,12 @@ export default async function Page() {
 					playstyle.
 				</p>
 			</section>
-			<Users />
+			<section className="md:w-1/2">
+				<SearchBar />
+			</section>
+			<section>
+				<SearchHistory />
+			</section>
 		</main>
 	);
 }

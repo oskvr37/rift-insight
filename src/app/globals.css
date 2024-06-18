@@ -9,3 +9,26 @@ body {
 main {
 	@apply p-2 max-w-screen-xl mx-auto;
 }
+
+input,
+select {
+	@apply bg-transparent;
+	@apply dark:text-slate-300;
+}
+
+button {
+	@apply dark:bg-slate-800 dark:text-slate-300;
+}
+
+.fadein {
+	animation: fadeIn ease-in-out 0.5s;
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

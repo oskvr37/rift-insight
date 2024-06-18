@@ -1,25 +1,8 @@
 import { queryToString } from "./helpers";
+import { REGIONS, SERVERS } from "@/types";
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-export type REGIONS = "americas" | "asia" | "europe" | "esports";
-export type SERVERS =
-	| "BR1"
-	| "EUN1"
-	| "EUW1"
-	| "JP1"
-	| "KR"
-	| "LA1"
-	| "LA2"
-	| "NA1"
-	| "OC1"
-	| "PH2"
-	| "RU"
-	| "SG2"
-	| "TH2"
-	| "TR1"
-	| "TW2"
-	| "VN2";
 
 export async function fetchApi(url: string) {
 	if (!RIOT_API_KEY) {
@@ -32,8 +15,12 @@ export async function fetchApi(url: string) {
 		},
 	});
 
+	if (request.status === 404) {
+		return null;
+	}
+
 	if (!request.ok) {
-		throw new Error(`Failed to fetch API: ${request.statusText}`);
+		throw new Error(`Failed to fetch API (${request.status}) - ${request.statusText}`);
 	}
 
 	return await request.json();
