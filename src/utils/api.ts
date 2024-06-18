@@ -16,7 +16,7 @@ export async function fetchApi(url: string) {
 	});
 
 	if (!request.ok) {
-		throw new Error(`Failed to fetch API: ${request.statusText}`);
+		throw new Error(`Failed to fetch API (${request.status}) - ${request.statusText}`);
 	}
 
 	return await request.json();
