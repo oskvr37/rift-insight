@@ -27,9 +27,13 @@ RIOT_API_KEY="your_riot_api_key"
 DATABASE_URL="postgresql://user:password@localhost:5432/database"
 ```
 
-## Database
+### Database
 
 Rift Insight uses a PostgreSQL database. You can run `npx prisma studio` to open the Prisma Studio and interact with the database. Use `npx prisma migrate dev` to sync the database schema with the Prisma schema.
+
+### Riot API
+
+You need to get an API key from the [Riot Developer Portal](https://developer.riotgames.com/). The API key is used to fetch data from the Riot API.
 
 ## Usage
 
