@@ -1,21 +1,4 @@
-import prisma from "@/utils/db";
-
-async function Users() {
-	const users = await prisma.user.findMany();
-
-	return (
-		<section className="space-y-4">
-			<h2 className="text-xl">Users</h2>
-			<ul>
-				{users.map((user) => (
-					<li key={user.id}>
-						{user.email} {user.name}
-					</li>
-				))}
-			</ul>
-		</section>
-	);
-}
+import SearchBar from "@/components/SearchBar";
 
 export default async function Page() {
 	return (
@@ -29,7 +12,9 @@ export default async function Page() {
 					playstyle.
 				</p>
 			</section>
-			<Users />
+			<section className="w-1/2">
+				<SearchBar />
+			</section>
 		</main>
 	);
 }
