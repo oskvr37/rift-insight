@@ -27,7 +27,7 @@ export default function SearchBar() {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="flex gap-2">
+		<form onSubmit={handleSubmit} className="flex gap-2 fadein">
 			<div className="flex rounded bg-slate-800 w-full">
 				<select
 					className="bg-slate-700 rounded px-2"
