@@ -4,6 +4,10 @@ const SearchBar = dynamic(() => import("@/components/SearchBar"), {
 	ssr: false,
 });
 
+const SearchHistory = dynamic(() => import("@/components/SearchHistory"), {
+	ssr: false,
+});
+
 export default async function Page() {
 	return (
 		<main className="space-y-8">
@@ -16,8 +20,11 @@ export default async function Page() {
 					playstyle.
 				</p>
 			</section>
-			<section className="w-1/2">
+			<section className="md:w-1/2">
 				<SearchBar />
+			</section>
+			<section>
+				<SearchHistory />
 			</section>
 		</main>
 	);
