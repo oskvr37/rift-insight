@@ -8,22 +8,20 @@ export function queryToString(query: Record<string, any>) {
 
 export function closestRegion(server: SERVERS) {
 	// find closest region to server
-	let region: REGIONS = "asia";
 	if (
 		server === "BR1" ||
 		server === "LA1" ||
 		server === "LA2" ||
 		server === "NA1"
 	) {
-		region = "americas";
+		return "americas";
 	} else if (
 		server === "EUN1" ||
 		server === "EUW1" ||
 		server === "RU" ||
 		server === "TR1"
 	) {
-		region = "europe";
+		return "europe";
 	}
-
-	return region;
+	return "asia";
 }
