@@ -5,8 +5,10 @@ import { useState } from "react";
 import { SERVERS } from "@/types";
 
 export default function SearchBar() {
+	const storageServer = getStorageServer();
+
+	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [inputValue, setInputValue] = useState("");
-	const [server, setServer] = useState<SERVERS>("EUW1");
 	const [error, setError] = useState<string | null>(null);
 
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -31,7 +33,10 @@ export default function SearchBar() {
 					className="bg-slate-700 rounded px-2"
 					value={server}
 					required
-					onChange={(event) => setServer(event.target.value as SERVERS)}
+					onChange={(event) => {
+						setServer(event.target.value as SERVERS);
+						setStorageServer(event.target.value as SERVERS);
+					}}
 				>
 					{Object.entries(SERVERS).map(([key, value]) => (
 						<option key={key} value={value}>
@@ -59,4 +64,14 @@ export default function SearchBar() {
 			{error && <p className="text-red-400">{error}</p>}
 		</form>
 	);
+}
+
+// local storage to store the last server the user selected
+
+function getStorageServer(): SERVERS {
+	return (localStorage.getItem("server") as SERVERS) || "";
+}
+
+function setStorageServer(server: SERVERS) {
+	localStorage.setItem("server", server);
 }
