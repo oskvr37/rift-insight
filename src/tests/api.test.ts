@@ -1,11 +1,10 @@
+import { REGIONS, SERVERS } from "@/types";
 import {
 	summonerByPuuid,
 	accountByRiotId,
 	matchesByPuuid,
 	leagueBySummoner,
 	championMasteryByPuuid,
-	REGIONS,
-	SERVERS,
 } from "@/utils/api";
 
 describe("Riot API ⚡", () => {
