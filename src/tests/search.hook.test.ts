@@ -1,5 +1,9 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { renderHook, act } from "@testing-library/react";
-import { useSearchHistory } from "@/hooks/search";
+import useSearchHistory from "@/hooks/search";
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
 
 const RECORD = {
@@ -92,13 +96,9 @@ describe("useSearchHistory", () => {
 			});
 		}
 
-		console.log(result.current.searchHistory);
-
 		act(() => {
 			result.current.storeRecentSearch(RECORD);
 		});
-
-		console.log(result.current.searchHistory);
 
 		expect(result.current.searchHistory.length).toBe(LIMIT);
 		expect(result.current.searchHistory[0][1].summonerName).toBe("1");

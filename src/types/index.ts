@@ -60,3 +60,10 @@ export const SERVERS_NORMALIZED = {
 }
 
 export type SERVERS_NORMALIZED = typeof SERVERS_NORMALIZED[keyof typeof SERVERS_NORMALIZED];
+
+export type SearchRecord = {
+	server: SERVERS;
+	normalized_server: SERVERS_NORMALIZED;
+	summonerName: string;
+	tagLine: string;
+};

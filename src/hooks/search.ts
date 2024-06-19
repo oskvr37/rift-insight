@@ -1,20 +1,13 @@
-import { SERVERS, SERVERS_NORMALIZED } from "@/types";
+import { SearchRecord } from "@/types";
 import { useLocalStorage } from ".";
 
-type SearchRecord = {
-	server: SERVERS;
-	normalized_server: SERVERS_NORMALIZED;
-	summonerName: string;
-	tagLine: string;
-};
-
-export function useSearchHistory(): {
+export default function useSearchHistory(): {
 	searchHistory: Array<[string, SearchRecord]>;
 	storeRecentSearch: (record: SearchRecord) => void;
 	clearSearchHistory: () => void;
 	deleteSearchRecord: (key: string) => void;
 } {
-	const [searchHistory, setSearch] = useLocalStorage("searchHistory", []);
+	const [searchHistory, setSearch] = useLocalStorage<Array<[string, SearchRecord]>>("searchHistory", []);
 
 	function storeRecentSearch(record: SearchRecord) {
 		const LIMIT = 10;
