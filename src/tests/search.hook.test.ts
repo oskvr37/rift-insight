@@ -92,13 +92,9 @@ describe("useSearchHistory", () => {
 			});
 		}
 
-		console.log(result.current.searchHistory);
-
 		act(() => {
 			result.current.storeRecentSearch(RECORD);
 		});
-
-		console.log(result.current.searchHistory);
 
 		expect(result.current.searchHistory.length).toBe(LIMIT);
 		expect(result.current.searchHistory[0][1].summonerName).toBe("1");
