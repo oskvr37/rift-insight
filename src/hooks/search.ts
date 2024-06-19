@@ -1,12 +1,6 @@
-import { SERVERS, SERVERS_NORMALIZED } from "@/types";
+import { SERVERS, SERVERS_NORMALIZED, SearchRecord } from "@/types";
 import { useLocalStorage } from ".";
 
-type SearchRecord = {
-	server: SERVERS;
-	normalized_server: SERVERS_NORMALIZED;
-	summonerName: string;
-	tagLine: string;
-};
 
 export function useSearchHistory(): {
 	searchHistory: Array<[string, SearchRecord]>;
