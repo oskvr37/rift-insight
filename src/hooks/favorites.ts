@@ -2,36 +2,38 @@ import { SearchRecord } from "@/types";
 import { useLocalStorage } from ".";
 
 export default function useFavorites(): {
-	favorites: string[];
+	favorites: Record<string, SearchRecord>;
 	addFavorite: (record: SearchRecord) => void;
 	removeFavorite: (record: SearchRecord) => void;
 	isFavorite: (record: SearchRecord) => boolean;
 } {
-	const [favorites, setFavorites] = useLocalStorage(
-		"favorites",
-		[] as string[]
-	);
+	const [favorites, setFavorites] = useLocalStorage<
+		Record<string, SearchRecord>
+	>("favorites", {});
 
 	function addFavorite(record: SearchRecord) {
 		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
 
-		if (favorites.includes(key)) {
-			return;
-		}
+		if (favorites[key]) return;
 
-		setFavorites([...favorites, key]);
+		setFavorites({ ...favorites, [key]: record });
 	}
 
 	function removeFavorite(record: SearchRecord) {
 		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
 
-		setFavorites(favorites.filter((favorite: string) => favorite !== key));
+		if (!favorites[key]) return;
+
+		const new_favorites = { ...favorites };
+		delete new_favorites[key];
+
+		setFavorites(new_favorites);
 	}
 
 	function isFavorite(record: SearchRecord) {
 		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
 
-		return favorites.includes(key);
+		return !!favorites[key];
 	}
 
 	return { favorites, addFavorite, removeFavorite, isFavorite };

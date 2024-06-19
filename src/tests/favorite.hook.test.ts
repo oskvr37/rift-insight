@@ -22,31 +22,40 @@ describe("useFavorites", () => {
 
 	test("should initialize with an empty array", () => {
 		const { result } = renderHook(() => useFavorites());
-		expect(result.current.favorites).toEqual([]);
+		expect(result.current.favorites).toEqual({});
 	});
 
 	test("should add a favorite", () => {
 		const { result } = renderHook(() => useFavorites());
+
 		act(() => {
 			result.current.addFavorite(RECORD);
 		});
-		expect(result.current.favorites).toEqual([RECORD_KEY]);
+
+		expect(result.current.favorites).toEqual({ [RECORD_KEY]: RECORD });
 	});
 
 	test("should remove a favorite", () => {
 		const { result } = renderHook(() => useFavorites());
+
 		act(() => {
-      result.current.addFavorite(RECORD);
-      result.current.removeFavorite(RECORD);
+			result.current.addFavorite(RECORD);
 		});
-		expect(result.current.favorites).toEqual([]);
+
+		act(() => {
+			result.current.removeFavorite(RECORD);
+		});
+
+		expect(result.current.favorites).toEqual({});
 	});
 
 	test("should check if a record is a favorite", () => {
 		const { result } = renderHook(() => useFavorites());
+
 		act(() => {
 			result.current.addFavorite(RECORD);
 		});
+
 		expect(result.current.isFavorite(RECORD)).toBe(true);
 	});
 });
