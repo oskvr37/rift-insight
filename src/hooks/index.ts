@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useLocalStorage(key: string, initialValue: any) {
+export function useLocalStorage<T>(key: string, initialValue: T) {
 	// Get the value from local storage or use the initial value if none is found
 	const [storedValue, setStoredValue] = useState(() => {
 		try {
