@@ -6,7 +6,6 @@ const createJestConfig = nextJest({
 });
 
 const config: Config = {
-	testEnvironment: "jsdom",
 	coverageProvider: "v8",
 };
 

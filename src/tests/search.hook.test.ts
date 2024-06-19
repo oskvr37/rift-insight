@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { renderHook, act } from "@testing-library/react";
 import { useSearchHistory } from "@/hooks/search";
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
