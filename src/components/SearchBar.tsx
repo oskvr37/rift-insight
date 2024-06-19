@@ -3,15 +3,12 @@
 import { searchUser } from "@/actions/search";
 import { useEffect, useState } from "react";
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
-import { useSearchHistory } from "@/hooks/search";
+import useSearchHistory from "@/hooks/search";
 import { useLocalStorage } from "@/hooks";
 
 export default function SearchBar() {
 	const { storeRecentSearch } = useSearchHistory();
-	const [storageServer, setStorageServer] = useLocalStorage("server", "") as [
-		SERVERS,
-		(value: SERVERS) => void
-	];
+	const [storageServer, setStorageServer] = useLocalStorage<SERVERS>("server", SERVERS["2"]);
 
 	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [serverNormalized, setServerNormalized] = useState<SERVERS_NORMALIZED>(
@@ -45,7 +42,7 @@ export default function SearchBar() {
 	useEffect(() => {
 		setServerNormalized(SERVERS_NORMALIZED[server]);
 		setStorageServer(server);
-	}, [server]);
+	}, [server, setStorageServer]);
 
 	return (
 		<section>

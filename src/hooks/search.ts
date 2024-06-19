@@ -1,14 +1,13 @@
-import { SERVERS, SERVERS_NORMALIZED, SearchRecord } from "@/types";
+import { SearchRecord } from "@/types";
 import { useLocalStorage } from ".";
 
-
-export function useSearchHistory(): {
+export default function useSearchHistory(): {
 	searchHistory: Array<[string, SearchRecord]>;
 	storeRecentSearch: (record: SearchRecord) => void;
 	clearSearchHistory: () => void;
 	deleteSearchRecord: (key: string) => void;
 } {
-	const [searchHistory, setSearch] = useLocalStorage("searchHistory", []);
+	const [searchHistory, setSearch] = useLocalStorage<Array<[string, SearchRecord]>>("searchHistory", []);
 
 	function storeRecentSearch(record: SearchRecord) {
 		const LIMIT = 10;
