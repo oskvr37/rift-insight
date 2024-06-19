@@ -2,6 +2,7 @@
 
 import useSearchHistory from "@/hooks/search";
 import useFavorites from "@/hooks/favorites";
+import Link from "next/link";
 
 export default function SearchHistory() {
 	const { searchHistory, clearSearchHistory, deleteSearchRecord } =
@@ -16,13 +17,17 @@ export default function SearchHistory() {
 				<div>
 					{Array.from(searchHistory.values() || []).map(([key, record]) => (
 						<div key={key}>
-							<span>
-								{record.summonerName}#{record.tagLine}
-							</span>
-							<span className="text-xs text-gray-400">
-								{" "}
-								- {record.normalized_server}
-							</span>
+							<Link
+								href={`/summoner/${record.normalized_server}/${record.summonerName}-${record.tagLine}`}
+							>
+								<span>
+									{record.summonerName}#{record.tagLine}
+								</span>
+								<span className="text-xs text-gray-400">
+									{" "}
+									- {record.normalized_server}
+								</span>
+							</Link>
 							<span
 								onClick={() => deleteSearchRecord(key)}
 								className="text-red-400"
@@ -56,13 +61,17 @@ export default function SearchHistory() {
 				<div>
 					{Object.values(favorites).map((record) => (
 						<div key={record.summonerName + record.tagLine}>
-							<span>
-								{record.summonerName}#{record.tagLine}
-							</span>
-							<span className="text-xs text-gray-400">
-								{" "}
-								- {record.normalized_server}
-							</span>
+							<Link
+								href={`/summoner/${record.normalized_server}/${record.summonerName}-${record.tagLine}`}
+							>
+								<span>
+									{record.summonerName}#{record.tagLine}
+								</span>
+								<span className="text-xs text-gray-400">
+									{" "}
+									- {record.normalized_server}
+								</span>
+							</Link>
 							<span onClick={() => removeFavorite(record)}>⭐</span>
 						</div>
 					))}
