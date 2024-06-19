@@ -3,9 +3,15 @@
 import { searchUser } from "@/actions/search";
 import { useEffect, useState } from "react";
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
+import { useSearchHistory } from "@/hooks/search";
+import { useLocalStorage } from "@/hooks";
 
 export default function SearchBar() {
-	const storageServer = getStorageServer();
+	const { storeRecentSearch } = useSearchHistory();
+	const [storageServer, setStorageServer] = useLocalStorage("server", "") as [
+		SERVERS,
+		(value: SERVERS) => void
+	];
 
 	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [serverNormalized, setServerNormalized] = useState<SERVERS_NORMALIZED>(
@@ -27,7 +33,7 @@ export default function SearchBar() {
 		const tagLine = split[1];
 
 		searchUser(summonerName, tagLine, server).then(() => {
-			addSearchToHistory({
+			storeRecentSearch({
 				server,
 				normalized_server: serverNormalized,
 				summonerName,
@@ -81,55 +87,4 @@ export default function SearchBar() {
 			</form>
 		</section>
 	);
-}
-
-// local storage to store the last server the user selected
-
-function getStorageServer(): SERVERS {
-	return (localStorage.getItem("server") as SERVERS) || "";
-}
-
-function setStorageServer(server: SERVERS) {
-	localStorage.setItem("server", server);
-}
-
-// local storage to store search history
-// it is dictionary with the server, normalized server, summoner name and tagline
-// where the key is summoner name and tagline
-
-// TODO convert to a map, to keep the order of the searches
-
-type SearchRecord = {
-	server: SERVERS;
-	normalized_server: SERVERS_NORMALIZED;
-	summonerName: string;
-	tagLine: string;
-};
-
-type SearchHistory = Record<string, SearchRecord>;
-
-export function getStorageHistory(): SearchHistory {
-	return JSON.parse(localStorage.getItem("history") || "{}");
-}
-
-function setStorageHistory(history: SearchHistory) {
-	localStorage.setItem("history", JSON.stringify(history));
-}
-
-function addSearchToHistory(search: SearchRecord) {
-	const LIMIT = 10;
-	const history = getStorageHistory();
-
-	// remove the oldest search if we reach the limit
-	// FIXME propably not working as long as we are using an object
-	// we should use map instead
-	if (Object.keys(history).length >= LIMIT) {
-		const oldest = Object.keys(history)[0];
-		delete history[oldest];
-	}
-
-	const key = `${search.summonerName.toLowerCase()}#${search.tagLine.toLowerCase()}`;
-	history[key] = search;
-
-	setStorageHistory(history);
 }

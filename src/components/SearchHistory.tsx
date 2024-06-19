@@ -1,21 +1,34 @@
 "use client";
 
-import { getStorageHistory } from "./SearchBar";
+import { useSearchHistory } from "@/hooks/search";
 
 export default function SearchHistory() {
-	const history = getStorageHistory();
+	const {
+		searchHistory,
+		clearSearchHistory,
+		deleteSearchRecord,
+	} = useSearchHistory();
 
 	return (
 		<section className="fadein space-y-2">
 			<h2 className="text-lg font-semibold">Search History</h2>
 			<div>
-				{Object.values(history).map((search) => (
-					<div key={search.summonerName}>
-						<p>
-							{search.normalized_server} {search.summonerName}#{search.tagLine}
-						</p>
-					</div>
-				))}
+				{Array.from(searchHistory.values() || []).map(
+					([key, { summonerName, tagLine, normalized_server }]) => (
+						<div key={key}>
+							<span>
+								{summonerName}#{tagLine}
+							</span>
+							<span className="text-xs text-gray-400">
+								{" "}
+								- {normalized_server}
+							</span>
+							<span onClick={() => deleteSearchRecord(key)}>
+								<span className="text-red-400"> X</span>
+							</span>
+						</div>
+					)
+				)}
 			</div>
 			<button
 				onClick={clearSearchHistory}
@@ -25,8 +38,4 @@ export default function SearchHistory() {
 			</button>
 		</section>
 	);
-}
-
-function clearSearchHistory() {
-	localStorage.removeItem("history");
 }
