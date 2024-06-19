@@ -8,7 +8,10 @@ import { useLocalStorage } from "@/hooks";
 
 export default function SearchBar() {
 	const { storeRecentSearch } = useSearchHistory();
-	const [storageServer, setStorageServer] = useLocalStorage<SERVERS>("server", SERVERS["2"]);
+	const [storageServer, setStorageServer] = useLocalStorage<SERVERS>(
+		"server",
+		SERVERS["2"]
+	);
 
 	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [serverNormalized, setServerNormalized] = useState<SERVERS_NORMALIZED>(
@@ -29,7 +32,7 @@ export default function SearchBar() {
 		const summonerName = split[0];
 		const tagLine = split[1];
 
-		searchUser(summonerName, tagLine, server).then(() => {
+		searchUser(summonerName, tagLine, server, serverNormalized).then(() => {
 			storeRecentSearch({
 				server,
 				normalized_server: serverNormalized,

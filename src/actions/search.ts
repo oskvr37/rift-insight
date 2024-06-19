@@ -1,6 +1,6 @@
 "use server";
 
-import { SERVERS } from "@/types";
+import { SERVERS, SERVERS_NORMALIZED } from "@/types";
 import { accountByRiotId } from "@/utils/api";
 import { closestRegion } from "@/utils/helpers";
 import { redirect } from "next/navigation";
@@ -8,7 +8,8 @@ import { redirect } from "next/navigation";
 export async function searchUser(
 	gameName: string,
 	tagLine: string,
-	server: SERVERS
+	server: SERVERS,
+	normalized_server: SERVERS_NORMALIZED
 ) {
 	// TODO ensure server is valid
 	// TODO ensure gameName and tagLine are valid (regex)
@@ -30,7 +31,7 @@ export async function searchUser(
 	const account = await accountByRiotId(gameName, tagLine, region);
 
 	if (account) {
-		redirect(`/summoner/${server}/${account.gameName}-${account.tagLine}`);
+		redirect(`/summoner/${normalized_server}/${account.gameName}-${account.tagLine}`);
 	}
 
 	// account does not exist or there was an error
