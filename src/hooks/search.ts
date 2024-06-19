@@ -17,7 +17,6 @@ export function useSearchHistory(): {
 	const [searchHistory, setSearch] = useLocalStorage("searchHistory", []);
 
 	function storeRecentSearch(record: SearchRecord) {
-		console.log("record", record);
 		const LIMIT = 10;
 
 		const current_map = new Map(searchHistory);
