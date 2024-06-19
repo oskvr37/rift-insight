@@ -17,10 +17,6 @@ export async function fetchApi(url: string, revalidate = 60) {
 		},
 	});
 
-	if (request.status === 404) {
-		return null;
-	}
-
 	if (!request.ok) {
 		throw new Error(
 			`Failed to fetch API (${request.status}) - ${request.statusText}`
