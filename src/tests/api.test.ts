@@ -16,10 +16,22 @@ describe("Riot API ⚡", () => {
 	let puuid = "";
 	let summonerId = "";
 
-	test("accountByRiotId", async () => {
-		const data = await accountByRiotId(GAME_NAME, TAG_LINE, REGION);
-		expect(data.puuid).toBeDefined();
-		puuid = data.puuid;
+	describe("accountByRiotId", () => {
+		test("returns data", async () => {
+			const data = await accountByRiotId(GAME_NAME, TAG_LINE, REGION);
+			expect(data.puuid).toBeDefined();
+			puuid = data.puuid;
+		});
+
+		test("returns null if not found", async () => {
+			const data = await accountByRiotId("invalid", "invalid", REGION);
+			expect(data).toBeNull();
+		});
+
+		test("returns data when using + instead of space", async () => {
+			const data = await accountByRiotId("KC+NEXT+ADKING", TAG_LINE, REGION);
+			expect(data).toBeDefined();
+		});
 	});
 
 	test("summonerByPuuid", async () => {
