@@ -25,3 +25,19 @@ export function closestRegion(server: SERVERS): REGIONS {
 	}
 	return "asia";
 }
+
+export function encodeSummoner(summoner: string): string {
+	// sanitizes summoner name for riot api
+	return (
+		summoner
+			.toLowerCase()
+			// replace whitespace with +
+			.replace(/\s/g, "+")
+			// remove special characters
+			.replace(/[^a-z0-9+]/gi, "")
+			// trim multiple +
+			.replace(/\++/g, "+")
+			// trim leading and trailing +
+			.replace(/^\++|\++$/g, "")
+	);
+}
