@@ -20,11 +20,18 @@ export default async function Page({
 
 	if (split.length !== 2) notFound();
 
-	const gameName = decodeURIComponent(split[0]);
+	// TODO create function to decode and validate gameName and tagLine
+	// its needed because we need to standardize input to make it work with the cache
+	// (fetch-cache is creating multiple files for the same summoner)
+	const gameName = decodeURIComponent(split[0].replaceAll("+", "%2B"))
+		.replaceAll("+", "")
+		.trim();
 	const tagLine = split[1];
 	const riotServer = SERVERS_UNNORMALIZED[
 		server as keyof typeof SERVERS_UNNORMALIZED
 	] as SERVERS;
+
+	console.log({ gameName, split, tagLine, riotServer });
 
 	const region = closestRegion(riotServer);
 	const riotAccount = await accountByRiotId(gameName, tagLine, region);
