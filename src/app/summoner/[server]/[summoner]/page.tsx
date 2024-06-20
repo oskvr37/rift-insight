@@ -2,6 +2,7 @@ import { accountByRiotId, summonerByPuuid } from "@/utils/api";
 import { SERVERS, SERVERS_NORMALIZED, SERVERS_UNNORMALIZED } from "@/types";
 import { closestRegion } from "@/utils/helpers";
 import { notFound, redirect } from "next/navigation";
+import { encodeSummoner } from "@/utils/helpers";
 
 export default async function Page({
 	params,
@@ -16,17 +17,16 @@ export default async function Page({
 	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED])
 		notFound();
 
-	const split = summoner.split("-");
+	const split = decodeURIComponent(summoner).split("-");
 
 	if (split.length !== 2) notFound();
 
-	// TODO create function to decode and validate gameName and tagLine
-	// its needed because we need to standardize input to make it work with the cache
-	// (fetch-cache is creating multiple files for the same summoner)
-	const gameName = decodeURIComponent(split[0].replaceAll("+", "%2B"))
-		.replaceAll("+", "")
-		.trim();
-	const tagLine = split[1];
+	const gameName = encodeSummoner(split[0]);
+
+	const tagLineRegex = /^[a-z0-9]{3,5}$/;
+	const tagLine = split[1].toLowerCase();
+	if (!tagLineRegex.test(tagLine)) notFound();
+
 	const riotServer = SERVERS_UNNORMALIZED[
 		server as keyof typeof SERVERS_UNNORMALIZED
 	] as SERVERS;
