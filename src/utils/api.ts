@@ -3,24 +3,29 @@ import { REGIONS, SERVERS } from "@/types";
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-
-export async function fetchApi(url: string) {
+export async function fetchApi(url: string, revalidate = 60) {
 	if (!RIOT_API_KEY) {
 		throw new Error("RIOT_API_KEY env variable is not set.");
 	}
 
 	const request = await fetch(url, {
+		next: {
+			revalidate: revalidate,
+		},
 		headers: {
 			"X-Riot-Token": RIOT_API_KEY,
 		},
 	});
 
-	if (request.status === 404) {
-		return null;
+	switch (request.status) {
+		case 404:
+			return null;
 	}
 
 	if (!request.ok) {
-		throw new Error(`Failed to fetch API (${request.status}) - ${request.statusText}`);
+		throw new Error(
+			`Failed to fetch API (${request.status}) - ${request.statusText}`
+		);
 	}
 
 	return await request.json();
@@ -32,7 +37,8 @@ export async function accountByRiotId(
 	region: REGIONS
 ): Promise<{ puuid: string; gameName: string; tagLine: string }> {
 	return await fetchApi(
-		`https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`
+		`https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`,
+		3600
 	);
 }
 

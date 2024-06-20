@@ -21,24 +21,24 @@ export const SERVERS = [
 export type REGIONS = typeof REGIONS[number];
 export type SERVERS = typeof SERVERS[number];
 
-// export const SERVERS_NORMALIZED = {
-// 	BR: "BR1",
-// 	EUW: "EUW1",
-// 	EUNE: "EUN1",
-// 	JP: "JP1",
-// 	KR: "KR",
-// 	LAN: "LA1",
-// 	LAS: "LA2",
-// 	NA: "NA1",
-// 	OCE: "OC1",
-// 	TR: "TR1",
-// 	RU: "RU",
-// 	SG: "SG",
-// 	VN: "VN",
-// 	TW: "TW",
-// 	TH: "TH",
-// 	PH: "PH",
-// };
+export const SERVERS_UNNORMALIZED = {
+	BR: "BR1",
+	EUW: "EUW1",
+	EUNE: "EUN1",
+	JP: "JP1",
+	KR: "KR",
+	LAN: "LA1",
+	LAS: "LA2",
+	NA: "NA1",
+	OCE: "OC1",
+	TR: "TR1",
+	RU: "RU",
+	SG: "SG",
+	VN: "VN",
+	TW: "TW",
+	TH: "TH",
+	PH: "PH",
+};
 
 export const SERVERS_NORMALIZED = {
 	BR1: "BR",
@@ -60,6 +60,7 @@ export const SERVERS_NORMALIZED = {
 }
 
 export type SERVERS_NORMALIZED = typeof SERVERS_NORMALIZED[keyof typeof SERVERS_NORMALIZED];
+export type SERVERS_UNNORMALIZED = typeof SERVERS_UNNORMALIZED[keyof typeof SERVERS_UNNORMALIZED];
 
 export type SearchRecord = {
 	server: SERVERS;

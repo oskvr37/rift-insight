@@ -6,7 +6,7 @@ export function queryToString(query: Record<string, any>) {
 		.join("&");
 }
 
-export function closestRegion(server: SERVERS) {
+export function closestRegion(server: SERVERS): REGIONS {
 	// find closest region to server
 	if (
 		server === "BR1" ||
@@ -24,4 +24,20 @@ export function closestRegion(server: SERVERS) {
 		return "europe";
 	}
 	return "asia";
+}
+
+export function encodeSummoner(summoner: string): string {
+	// sanitizes summoner name for riot api
+	return (
+		summoner
+			.toLowerCase()
+			// replace whitespace with +
+			.replace(/\s/g, "+")
+			// remove special characters
+			.replace(/[^a-z0-9+]/gi, "")
+			// trim multiple +
+			.replace(/\++/g, "+")
+			// trim leading and trailing +
+			.replace(/^\++|\++$/g, "")
+	);
 }
