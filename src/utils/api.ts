@@ -17,6 +17,11 @@ export async function fetchApi(url: string, revalidate = 60) {
 		},
 	});
 
+	switch (request.status) {
+		case 404:
+			return null;
+	}
+
 	if (!request.ok) {
 		throw new Error(
 			`Failed to fetch API (${request.status}) - ${request.statusText}`
