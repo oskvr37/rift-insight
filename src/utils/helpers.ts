@@ -6,7 +6,7 @@ export function queryToString(query: Record<string, any>) {
 		.join("&");
 }
 
-export function closestRegion(server: SERVERS) {
+export function closestRegion(server: SERVERS): REGIONS {
 	// find closest region to server
 	if (
 		server === "BR1" ||
