@@ -1,5 +1,8 @@
 "use server";
 
+// 💡 make server action return gameName and tagLine
+// so we can store formatted data in the store
+
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
 import { accountByRiotId, summonerByPuuid } from "@/utils/api";
 import { closestRegion } from "@/utils/helpers";
