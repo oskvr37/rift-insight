@@ -55,8 +55,8 @@ export default async function Page({
 	return (
 		<main className="space-y-8">
 			<SummonerProfile
-				gameName={gameName}
-				tagLine={tagLine}
+				gameName={riotAccount.gameName}
+				tagLine={riotAccount.tagLine}
 				summonerLevel={summonerData.summonerLevel}
 				profileIconId={summonerData.profileIconId}
 			/>

@@ -71,9 +71,7 @@ export default function SearchBar() {
 						required
 						type="text"
 						placeholder={`name#${serverNormalized}`}
-						// TODO tagline max length is 5
-						// TODO figure out max length for summoner name
-						pattern="^[a-zA-Z0-9 ]+#[a-zA-Z0-9 ]+$"
+						pattern="^[a-zA-Z0-9 ]{3,16}#[a-zA-Z0-9 ]{3,5}$"
 						value={inputValue}
 						onChange={(event) => setInputValue(event.target.value)}
 					/>

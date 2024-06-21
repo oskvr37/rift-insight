@@ -20,6 +20,11 @@ and allow searching for users by nickname.
 - Match history
 - Recently played with
 - Champion mastery
+- Most played champions/roles
+- User points history graph
+- Season ranks
+- Background image with user's favorite champion
+- Performance badges
 
 ## Database
 
@@ -27,6 +32,10 @@ and allow searching for users by nickname.
 
 We will store user points history in a database.
 This will allow us to display a graph of user ranked points over time.
+
+### Season ranks
+
+Store user ranks for each season.
 
 ### Cache
 

@@ -3,6 +3,7 @@ import {
 	summonerByPuuid,
 	accountByRiotId,
 	matchesByPuuid,
+	matchById,
 	leagueBySummoner,
 	championMasteryByPuuid,
 } from "@/utils/api";
@@ -15,6 +16,7 @@ describe("Riot API ⚡", () => {
 
 	let puuid = "";
 	let summonerId = "";
+	let matches = [] as string[];
 
 	describe("accountByRiotId", () => {
 		test("returns data", async () => {
@@ -46,11 +48,6 @@ describe("Riot API ⚡", () => {
 	// and test the response data
 
 	describe("detailed data", () => {
-		test("matchesByPuuid", async () => {
-			const matches = await matchesByPuuid(puuid, REGION);
-			expect(matches).toBeDefined();
-		});
-
 		test("leagueBySummoner", async () => {
 			const leagues = await leagueBySummoner(summonerId, SERVER);
 			expect(leagues).toBeDefined();
@@ -59,6 +56,18 @@ describe("Riot API ⚡", () => {
 		test("championMasteryByPuuid", async () => {
 			const mastery = await championMasteryByPuuid(puuid, SERVER);
 			expect(mastery).toBeDefined();
+		});
+	});
+
+	describe("matches", () => {
+		test("matchesByPuuid", async () => {
+			matches = await matchesByPuuid(puuid, REGION);
+			expect(matches).toBeDefined();
+		});
+
+		test("matchById", async () => {
+			const match = await matchById(matches[0], REGION);
+			expect(match).toBeDefined();
 		});
 	});
 });

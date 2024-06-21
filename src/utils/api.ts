@@ -1,16 +1,17 @@
 import { queryToString } from "./helpers";
 import { REGIONS, SERVERS } from "@/types";
+import { GameData } from "@/types/match";
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-export async function fetchApi(url: string, revalidate = 60) {
+export async function fetchApi(url: string, revalidate = 0) {
 	if (!RIOT_API_KEY) {
 		throw new Error("RIOT_API_KEY env variable is not set.");
 	}
 
 	const request = await fetch(url, {
 		next: {
-			revalidate: revalidate,
+			revalidate: revalidate || false,
 		},
 		headers: {
 			"X-Riot-Token": RIOT_API_KEY,
@@ -38,7 +39,7 @@ export async function accountByRiotId(
 ): Promise<{ puuid: string; gameName: string; tagLine: string }> {
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`,
-		3600
+		86400
 	);
 }
 
@@ -54,7 +55,8 @@ export async function summonerByPuuid(
 	summonerLevel: number;
 }> {
 	return await fetchApi(
-		`https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`
+		`https://${server}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`,
+		3600
 	);
 }
 
@@ -73,7 +75,18 @@ export async function matchesByPuuid(
 	const queryString = queryToString(query || {});
 
 	return await fetchApi(
-		`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?${queryString}`
+		`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?${queryString}`,
+		1800
+	);
+}
+
+export async function matchById(
+	matchId: string,
+	region: REGIONS
+): Promise<GameData> {
+	return await fetchApi(
+		`https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}`,
+		
 	);
 }
 
@@ -97,7 +110,8 @@ export async function leagueBySummoner(
 	}[]
 > {
 	return await fetchApi(
-		`https://${server}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`
+		`https://${server}.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}`,
+		1800
 	);
 }
 
@@ -123,6 +137,8 @@ export async function championMasteryByPuuid(
 	const queryString = queryToString(query || {});
 
 	return await fetchApi(
-		`https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?${queryString}`
+		`https://${server}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?${queryString}`,
+		1800
 	);
 }
+
