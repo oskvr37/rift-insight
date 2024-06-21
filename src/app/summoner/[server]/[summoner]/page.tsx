@@ -1,8 +1,15 @@
-import { accountByRiotId, summonerByPuuid } from "@/utils/api";
-import { SERVERS, SERVERS_NORMALIZED, SERVERS_UNNORMALIZED } from "@/types";
-import { closestRegion } from "@/utils/helpers";
 import { notFound, redirect } from "next/navigation";
+
+import { SERVERS, SERVERS_NORMALIZED, SERVERS_UNNORMALIZED } from "@/types";
+
+import { accountByRiotId, summonerByPuuid } from "@/utils/api";
+import { closestRegion } from "@/utils/helpers";
 import { encodeSummoner } from "@/utils/helpers";
+
+import Matches from "@/components/summoner/Matches";
+import SummonerLeague from "@/components/summoner/League";
+import SummonerMastery from "@/components/summoner/Mastery";
+import SummonerProfile from "@/components/summoner/Profile";
 
 export default async function Page({
 	params,
@@ -31,7 +38,7 @@ export default async function Page({
 		server as keyof typeof SERVERS_UNNORMALIZED
 	] as SERVERS;
 
-	console.log({ gameName, split, tagLine, riotServer });
+	console.log("[Summoner]", { gameName, split, tagLine, riotServer });
 
 	const region = closestRegion(riotServer);
 	const riotAccount = await accountByRiotId(gameName, tagLine, region);
@@ -46,13 +53,16 @@ export default async function Page({
 	}
 
 	return (
-		<main>
-			<section>
-				<h1>
-					{riotAccount.gameName} #{riotAccount.tagLine}
-				</h1>
-				<p>{summonerData.summonerLevel} lvl</p>
-			</section>
+		<main className="space-y-8">
+			<SummonerProfile
+				gameName={gameName}
+				tagLine={tagLine}
+				summonerLevel={summonerData.summonerLevel}
+				profileIconId={summonerData.profileIconId}
+			/>
+			<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
+			<Matches puuid={summonerData.puuid} region={region} />
+			<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
 		</main>
 	);
 }
