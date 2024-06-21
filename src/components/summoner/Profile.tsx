@@ -16,7 +16,7 @@ export default async function SummonerProfile({
 	return (
 		<section>
 			<h1>
-				{gameName} <span className="text-sm">{tagLine}</span>
+				{gameName} <span className="text-sm">#{tagLine}</span>
 			</h1>
 			<p>{summonerLevel} lvl</p>
 			<img src={profile_icon} alt="profile icon" />
