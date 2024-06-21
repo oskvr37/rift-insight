@@ -18,8 +18,8 @@ export const SERVERS = [
 	"VN2",
 ] as const;
 
-export type REGIONS = typeof REGIONS[number];
-export type SERVERS = typeof SERVERS[number];
+export type REGIONS = (typeof REGIONS)[number];
+export type SERVERS = (typeof SERVERS)[number];
 
 export const SERVERS_UNNORMALIZED = {
 	BR: "BR1",
@@ -57,10 +57,12 @@ export const SERVERS_NORMALIZED = {
 	TW2: "TW",
 	TH2: "TH",
 	PH2: "PH",
-}
+};
 
-export type SERVERS_NORMALIZED = typeof SERVERS_NORMALIZED[keyof typeof SERVERS_NORMALIZED];
-export type SERVERS_UNNORMALIZED = typeof SERVERS_UNNORMALIZED[keyof typeof SERVERS_UNNORMALIZED];
+export type SERVERS_NORMALIZED =
+	(typeof SERVERS_NORMALIZED)[keyof typeof SERVERS_NORMALIZED];
+export type SERVERS_UNNORMALIZED =
+	(typeof SERVERS_UNNORMALIZED)[keyof typeof SERVERS_UNNORMALIZED];
 
 export type SearchRecord = {
 	server: SERVERS;
@@ -68,3 +70,4 @@ export type SearchRecord = {
 	summonerName: string;
 	tagLine: string;
 };
+
