@@ -2,6 +2,10 @@ import { REGIONS } from "@/types";
 import { GameData } from "@/types/match";
 import { matchesByPuuid, matchById } from "@/utils/api";
 
+// 💡 will need internal api for handling matches fetching.
+// one request for user takes around 2MB of data (only 20 matches)
+// so we need to store only neccessary data.
+
 function Participant({
 	participant,
 }: {
@@ -12,7 +16,8 @@ function Participant({
 	return (
 		<div className={`${bg_color} p-2 rounded`}>
 			<span className="font-bold">{participant.summonerName}</span>
-
+			{" #"}
+			{participant.riotIdTagline}
 			<p>
 				{participant.championName} {participant.kills} / {participant.deaths} /{" "}
 				{participant.assists}
