@@ -20,6 +20,11 @@ and allow searching for users by nickname.
 - Match history
 - Recently played with
 - Champion mastery
+- Most played champions/roles
+- User points history graph
+- Season ranks
+- Background image with user's favorite champion
+- Performance badges
 
 ## Database
 
