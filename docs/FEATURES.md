@@ -28,6 +28,10 @@ and allow searching for users by nickname.
 We will store user points history in a database.
 This will allow us to display a graph of user ranked points over time.
 
+### Season ranks
+
+Store user ranks for each season.
+
 ### Cache
 
 Since next.js is not supporting caching prisma queries,
