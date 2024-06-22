@@ -76,7 +76,7 @@ export async function matchesByPuuid(
 
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?${queryString}`,
-		1800
+		10
 	);
 }
 
@@ -86,7 +86,7 @@ export async function matchById(
 ): Promise<GameData> {
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}`,
-		
+		0
 	);
 }
 
@@ -141,4 +141,3 @@ export async function championMasteryByPuuid(
 		1800
 	);
 }
-
