@@ -1,7 +1,8 @@
 "use server";
 
 // 💡 make server action return gameName and tagLine
-// so we can store formatted data in the store
+// so we can store formatted data in the store.
+// but lets wait for `useActionState` to be released
 
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
 import { accountByRiotId, summonerByPuuid } from "@/utils/api";
