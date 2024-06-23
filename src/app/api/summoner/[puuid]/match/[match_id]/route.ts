@@ -4,14 +4,21 @@ import { matchById } from "@/utils/api";
 
 // this route stores formatted match data
 
-export async function GET(req: NextRequest, { params}: {
-  params: {
-    puuid: string;
-    match_id: string;
-  };
-}) {
-  const match = await matchById(params.match_id, "europe");
-  return NextResponse.json(formatMatch(match));
+export async function GET(
+	req: NextRequest,
+	{
+		params,
+	}: {
+		params: {
+			puuid: string;
+			match_id: string;
+		};
+	}
+) {
+	// ⚡ get correct region from puuid
+	const match = await matchById(params.match_id, "europe");
+	const formattedMatch = formatMatch(match);
+	return NextResponse.json(formattedMatch);
 }
 
 function formatMatch(match: GameData) {
@@ -33,7 +40,10 @@ function formatMatch(match: GameData) {
 			champLevel: p.champLevel,
 			totalMinionsKilled: p.totalMinionsKilled,
 			neutralMinionsKilled: p.neutralMinionsKilled,
-      score: p.kills + p.assists - p.deaths,
+			score: p.kills + p.assists - p.deaths,
+			win: p.win,
 		})),
 	};
 }
+
+export type FormattedMatch = ReturnType<typeof formatMatch>;
