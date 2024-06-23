@@ -38,7 +38,7 @@ export default async function Page({
 		server as keyof typeof SERVERS_UNNORMALIZED
 	] as SERVERS;
 
-	console.log("[Summoner]", { gameName, split, tagLine, riotServer });
+	// console.log("[Summoner]", { gameName, split, tagLine, riotServer });
 
 	const region = closestRegion(riotServer);
 	const riotAccount = await accountByRiotId(gameName, tagLine, region);
