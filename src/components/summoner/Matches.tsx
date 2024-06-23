@@ -1,5 +1,6 @@
 import { REGIONS } from "@/types";
 import { FormattedMatch } from "@/app/api/summoner/[puuid]/match/[match_id]/route";
+import { matchesByPuuid } from "@/utils/api";
 
 function Participant({
 	participant,
@@ -43,12 +44,32 @@ export default async function SummonerMatches({
 	puuid: string;
 	region: REGIONS;
 }) {
-	// 💡 maybe we can just skip /matches route
-	// and fetch cached matches here directly
+	const LIMIT = 10;
 	const page = 1;
-	const matches: FormattedMatch[] = await fetch(
-		`http://localhost:3000/api/summoner/${puuid}/matches/${page}`
-	).then((res) => res.json());
+
+	const matchIds = await matchesByPuuid(puuid, region, {
+		count: LIMIT,
+		start: LIMIT * (page - 1),
+		type: "ranked",
+	});
+
+	const matches: FormattedMatch[] = [];
+
+	// ⚡ we would use `Promise.all` here to fetch all matches at once
+	// but we are rate limited by not having a production API key
+
+	for (const matchId of matchIds) {
+		await fetch(
+			`http://localhost:3000/api/summoner/${puuid}/match/${matchId}`,
+			{
+				cache: "force-cache",
+			}
+		)
+			.then((res) => res.json())
+			.then((match) => {
+				matches.push(match);
+			});
+	}
 
 	return (
 		<section>
