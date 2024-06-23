@@ -1,26 +1,35 @@
 import { queryToString } from "./helpers";
 import { REGIONS, SERVERS } from "@/types";
 import { GameData } from "@/types/match";
+import type { RequestInit } from "next/dist/server/web/spec-extension/request";
 
 const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
-export async function fetchApi(url: string, revalidate = 0) {
+export async function fetchApi(
+	url: string,
+	revalidate: number | false | undefined,
+	cache: RequestInit["cache"] = undefined
+) {
 	if (!RIOT_API_KEY) {
 		throw new Error("RIOT_API_KEY env variable is not set.");
 	}
 
 	const request = await fetch(url, {
 		next: {
-			revalidate: revalidate || false,
+			revalidate: revalidate,
 		},
+		cache,
 		headers: {
 			"X-Riot-Token": RIOT_API_KEY,
 		},
 	});
 
 	switch (request.status) {
-		case 404:
+		case 404: // Not Found
 			return null;
+		case 429: // Too Many Requests
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+			return fetchApi(url, revalidate, cache);
 	}
 
 	if (!request.ok) {
@@ -76,7 +85,7 @@ export async function matchesByPuuid(
 
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?${queryString}`,
-		1800
+		10
 	);
 }
 
@@ -86,7 +95,8 @@ export async function matchById(
 ): Promise<GameData> {
 	return await fetchApi(
 		`https://${region}.api.riotgames.com/lol/match/v5/matches/${matchId}`,
-		
+		undefined,
+		"no-store"
 	);
 }
 
@@ -141,4 +151,3 @@ export async function championMasteryByPuuid(
 		1800
 	);
 }
-
