@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 
 const versions = await getVersions();
 console.log("⚙️ Latest version:", versions[0]);
