@@ -11,7 +11,7 @@ export default async function SummonerProfile({
 	summonerLevel: number;
 	profileIconId: number;
 }) {
-	const profile_icon = await profileIcon(profileIconId);
+	const profile_icon = profileIcon(profileIconId);
 
 	return (
 		<section>
