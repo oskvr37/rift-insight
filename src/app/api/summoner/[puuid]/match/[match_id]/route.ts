@@ -25,6 +25,7 @@ function formatMatch(match: GameData) {
 	return {
 		matchId: match.metadata.matchId,
 		participants: match.info.participants.map((p) => ({
+			puuid: p.puuid,
 			summonerName: p.summonerName,
 			riotIdTagline: p.riotIdTagline,
 			championName: p.championName,

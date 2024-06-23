@@ -61,8 +61,8 @@ export default async function Page({
 				profileIconId={summonerData.profileIconId}
 			/>
 			<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
-			<Matches puuid={summonerData.puuid} region={region} />
 			<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
+			<Matches puuid={summonerData.puuid} region={region} />
 		</main>
 	);
 }

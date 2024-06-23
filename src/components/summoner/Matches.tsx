@@ -71,12 +71,25 @@ export default async function SummonerMatches({
 			});
 	}
 
+	const data: FormattedMatch["participants"][0][] = [];
+
+	matches.map((m) =>
+		m.participants.filter((p) => p.puuid === puuid).map((p) => data.push(p))
+	);
+
+	const winrate = data.filter((p) => p.win).length / data.length;
+
 	return (
 		<section>
 			<h1>Matches</h1>
-			{matches.map((m) => (
-				<Match key={m.matchId} match={m} />
-			))}
+			<div>
+				<h2>Winrate: {100 * winrate}%</h2>
+			</div>
+			<div className="space-y-2">
+				{data.map((p) => (
+					<Participant key={p.summonerName} participant={p} />
+				))}
+			</div>
 		</section>
 	);
 }
