@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 
 const versions = await getVersions();
 console.log("⚙️ Latest version:", versions[0]);
@@ -8,6 +8,10 @@ console.log("✨ Base URL:", baseUrl);
 
 const { data: champions } = await getChampions(baseUrl);
 console.log("🐉 Champions:", Object.keys(champions).length);
+
+if (!existsSync("./src/public")) {
+	mkdirSync("./src/public");
+}
 
 writeFileSync(
 	"./src/public/dragon.json",

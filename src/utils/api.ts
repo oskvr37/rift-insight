@@ -8,7 +8,8 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY;
 export async function fetchApi(
 	url: string,
 	revalidate: number | false | undefined,
-	cache: RequestInit["cache"] = undefined
+	cache: RequestInit["cache"] = undefined,
+	wasRateLimited = false
 ) {
 	if (!RIOT_API_KEY) {
 		throw new Error("RIOT_API_KEY env variable is not set.");
@@ -28,8 +29,12 @@ export async function fetchApi(
 		case 404: // Not Found
 			return null;
 		case 429: // Too Many Requests
+			// 💩 not the best solution
+			if (wasRateLimited) {
+				throw new Error("Rate limited twice in a row.");
+			}
 			await new Promise((resolve) => setTimeout(resolve, 2000));
-			return fetchApi(url, revalidate, cache);
+			return fetchApi(url, revalidate, cache, true);
 	}
 
 	if (!request.ok) {

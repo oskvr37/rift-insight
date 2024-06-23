@@ -14,12 +14,15 @@ export default async function SummonerProfile({
 	const profile_icon = profileIcon(profileIconId);
 
 	return (
-		<section>
+		<section className="flex gap-4">
+			<img src={profile_icon} alt="profile icon" className="size-32 rounded-xl" />
+			<div>
+
 			<h1>
 				{gameName} <span className="text-sm">#{tagLine}</span>
 			</h1>
 			<p>{summonerLevel} lvl</p>
-			<img src={profile_icon} alt="profile icon" />
+			</div>
 		</section>
 	);
 }
