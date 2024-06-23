@@ -58,13 +58,15 @@ export default async function SummonerMatches({
 	// ⚡ we would use `Promise.all` here to fetch all matches at once
 	// but we are rate limited by not having a production API key
 
+	const baseUrl =
+		process.env.NODE_ENV === "production"
+			? "https://rift-insight.vercel.app"
+			: "http://localhost:3000";
+
 	for (const matchId of matchIds) {
-		await fetch(
-			`http://localhost:3000/api/summoner/${puuid}/match/${matchId}`,
-			{
-				cache: "force-cache",
-			}
-		)
+		await fetch(`${baseUrl}/api/summoner/${puuid}/match/${matchId}`, {
+			cache: "force-cache",
+		})
 			.then((res) => res.json())
 			.then((match) => {
 				matches.push(match);
