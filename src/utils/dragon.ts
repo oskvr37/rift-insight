@@ -6,7 +6,7 @@ export function profileIcon(id: number) {
 	return `${baseUrl}/img/profileicon/${id}.png`;
 }
 
-export async function championIcon(id: number) {
+export function championIcon(id: number) {
 	const champion = Object.values(champions).find(
 		(champion) => champion.key === String(id)
 	);
