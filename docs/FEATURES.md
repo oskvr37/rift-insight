@@ -1,17 +1,5 @@
 # Planned features
 
-## Searching
-
-We will store users in a database
-and allow searching for users by nickname.
-
-### Search Bar
-
-- choose region to search in
-- search by nickname + tag
-- search history (local storage)
-- add favorite users (local storage)
-
 ## User Profile
 
 - Avatar with nickname
@@ -37,8 +25,11 @@ This will allow us to display a graph of user ranked points over time.
 
 Store user ranks for each season.
 
-### Cache
+# Current features
 
-Since next.js is not supporting caching prisma queries,
-we will have to implement our own caching mechanism.
-Redis would be a good choice for this.
+## Search Bar
+
+- choose region to search in
+- search by nickname + tag
+- local search history
+- add users to favorites
