@@ -24,19 +24,6 @@ function Participant({
 	);
 }
 
-function Match({ match }: { match: FormattedMatch }) {
-	return (
-		<div>
-			<h2>{match.matchId}</h2>
-			<div className="grid grid-cols-5 gap-2">
-				{match.participants.map((p) => (
-					<Participant key={p.summonerName} participant={p} />
-				))}
-			</div>
-		</div>
-	);
-}
-
 export default async function SummonerMatches({
 	puuid,
 	region,
