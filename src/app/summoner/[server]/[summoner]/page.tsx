@@ -18,9 +18,8 @@ export default async function Page({
 }) {
 	const server = params.server.toUpperCase();
 	const summoner = params.summoner;
-	// validate params
+
 	if (typeof server !== "string" || typeof summoner !== "string") notFound();
-	// check if server is valid
 	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED])
 		notFound();
 
@@ -45,7 +44,6 @@ export default async function Page({
 
 	if (!riotAccount) notFound();
 
-	// check if server is valid
 	const summonerData = await summonerByPuuid(riotAccount.puuid, riotServer);
 
 	if (!summonerData) {

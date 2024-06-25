@@ -16,7 +16,6 @@ export async function searchUser(
 	server: SERVERS,
 	normalized_server: SERVERS_NORMALIZED
 ) {
-	// validate incoming data
 	if (
 		typeof gameName !== "string" ||
 		typeof tagLine !== "string" ||
@@ -25,12 +24,10 @@ export async function searchUser(
 		return;
 	}
 
-	// ensure `server` is valid
 	if (!SERVERS.includes(server)) {
 		return;
 	}
 
-	// ensure `gameName` and `tagLine are valid
 	const riotIdRegex = /^[a-zA-Z0-9 ]{3,16}$/;
 	const tagLineRegex = /^[a-zA-Z0-9]{3,5}$/;
 
@@ -41,12 +38,13 @@ export async function searchUser(
 	const region = closestRegion(server);
 	const account = await accountByRiotId(gameName, tagLine, region);
 
+	// ✨ build an error page
 	if (!account) redirect(`/summoner`);
 
 	const summoner = await summonerByPuuid(account.puuid, server);
 
 	if (!summoner) {
-		// encourage user to try with a different server
+		// ✨ build an error page
 		redirect(`/summoner/${normalized_server}`);
 	}
 
