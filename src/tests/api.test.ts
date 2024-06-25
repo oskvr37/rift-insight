@@ -44,7 +44,7 @@ describe("Riot API", () => {
 		console.log({ puuid, summonerId });
 	});
 
-	// TODO Test query parameters for functions
+	// ✅ test query parameters for functions
 	// and test the response data
 
 	describe("detailed data", () => {
