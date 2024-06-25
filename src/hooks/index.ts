@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
-	// Get the value from local storage or use the initial value if none is found
 	const [storedValue, setStoredValue] = useState<T>(() => {
 		try {
 			const item = window.localStorage.getItem(key);
@@ -12,7 +11,6 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 		}
 	});
 
-	// Update the local storage whenever the stored value changes
 	const setValue = (value: T | ((val: T) => T)) => {
 		try {
 			const valueToStore =

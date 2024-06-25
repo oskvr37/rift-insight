@@ -10,6 +10,8 @@ import Matches from "@/components/summoner/Matches";
 import SummonerLeague from "@/components/summoner/League";
 import SummonerMastery from "@/components/summoner/Mastery";
 import SummonerProfile from "@/components/summoner/Profile";
+import Recently from "@/components/summoner/Recently";
+import { Suspense } from "react";
 
 export default async function Page({
 	params,
@@ -18,9 +20,8 @@ export default async function Page({
 }) {
 	const server = params.server.toUpperCase();
 	const summoner = params.summoner;
-	// validate params
+
 	if (typeof server !== "string" || typeof summoner !== "string") notFound();
-	// check if server is valid
 	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED])
 		notFound();
 
@@ -45,7 +46,6 @@ export default async function Page({
 
 	if (!riotAccount) notFound();
 
-	// check if server is valid
 	const summonerData = await summonerByPuuid(riotAccount.puuid, riotServer);
 
 	if (!summonerData) {
@@ -53,16 +53,38 @@ export default async function Page({
 	}
 
 	return (
-		<main className="space-y-8">
-			<SummonerProfile
-				gameName={riotAccount.gameName}
-				tagLine={riotAccount.tagLine}
-				summonerLevel={summonerData.summonerLevel}
-				profileIconId={summonerData.profileIconId}
-			/>
-			<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
-			<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
-			<Matches puuid={summonerData.puuid} region={region} />
+		<main className="space-y-4">
+			<div className="flex justify-between">
+				<SummonerProfile
+					gameName={riotAccount.gameName}
+					tagLine={riotAccount.tagLine}
+					summonerLevel={summonerData.summonerLevel}
+					profileIconId={summonerData.profileIconId}
+				/>
+				<section>
+					<h2>Performance overview</h2>
+				</section>
+				<section>
+					<h3>Add to favorites</h3>
+				</section>
+			</div>
+			<div className="grid md:grid-cols-3 gap-4">
+				<div className="space-y-4">
+					<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
+					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
+					<Suspense fallback={<div>Loading...</div>}>
+						<Recently puuid={summonerData.puuid} region={region} page={1} />
+					</Suspense>
+					<section>
+						<h2>Points graph</h2>
+					</section>
+				</div>
+				<div className="col-span-2">
+					<Suspense fallback={<div>Loading...</div>}>
+						<Matches puuid={summonerData.puuid} region={region} />
+					</Suspense>
+				</div>
+			</div>
 		</main>
 	);
 }

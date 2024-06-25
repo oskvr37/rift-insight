@@ -8,7 +8,7 @@ import {
 	championMasteryByPuuid,
 } from "@/utils/api";
 
-describe("Riot API ⚡", () => {
+describe("Riot API", () => {
 	const GAME_NAME = "KC NEXT ADKING";
 	const TAG_LINE = "euw";
 	const REGION: REGIONS = "europe";
@@ -44,7 +44,7 @@ describe("Riot API ⚡", () => {
 		console.log({ puuid, summonerId });
 	});
 
-	// TODO Test query parameters for functions
+	// ✅ test query parameters for functions
 	// and test the response data
 
 	describe("detailed data", () => {
