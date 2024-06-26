@@ -39,6 +39,7 @@ export default function SearchBar() {
 				summonerName,
 				tagLine,
 			});
+			setInputValue("");
 		});
 	}
 
