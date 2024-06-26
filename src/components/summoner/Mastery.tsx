@@ -17,7 +17,7 @@ export default async function SummonerMastery({
 			<h2>Champion Mastery</h2>
 			<p className="dark:text-slate-300">See more</p>
 			</div>
-			<div className="flex gap-2 dark:text-slate-300 justify-between dark:bg-slate-800 p-2 rounded">
+			<div className="flex gap-2 dark:text-slate-300 justify-between dark:bg-slate-800 bg-slate-100 p-2 rounded">
 				{mastery.map((m) => (
 					<div key={m.championId} className="flex gap-2 items-center">
 						<img src={championIcon(m.championId)} alt="" className="size-12" />

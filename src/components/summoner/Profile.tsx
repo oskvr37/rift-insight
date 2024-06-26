@@ -15,13 +15,16 @@ export default async function SummonerProfile({
 
 	return (
 		<section className="flex gap-4">
-			<img src={profile_icon} alt="profile icon" className="size-32 rounded-xl" />
+			<img
+				src={profile_icon}
+				alt="profile icon"
+				className="size-32 rounded-xl"
+			/>
 			<div>
-
-			<h1>
-				{gameName} <span className="text-sm">#{tagLine}</span>
-			</h1>
-			<p>{summonerLevel} lvl</p>
+				<h1 className="text-2xl">
+					{gameName} <span className="text-sm text-cyan-400">#{tagLine}</span>
+				</h1>
+				<span className="dark:text-slate-300">{summonerLevel} lvl</span>
 			</div>
 		</section>
 	);
