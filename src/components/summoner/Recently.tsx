@@ -14,13 +14,14 @@ export default async function Recently({
 
 	const playedWith: Record<string, any> = {};
 	matches.map((m) =>
-		m.participants.map((p) => {
-			if (p.puuid === puuid) return;
-			if (playedWith[p.puuid]) {
-				playedWith[p.puuid].games += 1;
-				playedWith[p.puuid].win += p.win ? 1 : 0;
+		m.players.map((p) => {
+			if (p.info.puuid === puuid) return;
+			if (playedWith[p.info.puuid]) {
+				playedWith[p.info.puuid].games += 1;
+				playedWith[p.info.puuid].win += p.team.win ? 1 : 0;
 			} else {
-				playedWith[p.puuid] = { ...p, games: 1, win: p.win ? 1 : 0 };
+				playedWith[p.info.puuid] = p;
+				playedWith[p.info.puuid] = { ...p, games: 1, win: p.team.win ? 1 : 0 };
 			}
 		})
 	);
@@ -34,7 +35,7 @@ export default async function Recently({
 				{data.map((p) => (
 					<div key={p.summonerName} className="flex gap-2 items-center">
 						<span className="mr-auto">
-							{p.summonerName} #{p.riotIdTagline}
+							{p.info.riotIdGameName} #{p.info.riotIdTagline}
 						</span>
 						<span className="dark:text-slate-400 text-sm">
 							{p.games} games ({(100 * (p.win / p.games)).toFixed(0)}%)
