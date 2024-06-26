@@ -1,4 +1,4 @@
-import dragon from "@/public/dragon.json";
+import dragon from "@/utils/dragon.json";
 
 const { baseUrl, champions } = dragon;
 

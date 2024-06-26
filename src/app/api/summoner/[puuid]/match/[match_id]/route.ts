@@ -23,26 +23,54 @@ export async function GET(
 
 function formatMatch(match: GameData) {
 	return {
-		matchId: match.metadata.matchId,
-		participants: match.info.participants.map((p) => ({
-			puuid: p.puuid,
-			summonerName: p.summonerName,
-			riotIdTagline: p.riotIdTagline,
-			championName: p.championName,
-			kills: p.kills,
-			deaths: p.deaths,
-			assists: p.assists,
-			longestTimeSpentLiving: p.longestTimeSpentLiving,
-			totalDamageDealtToChampions: p.totalDamageDealtToChampions,
-			totalDamageTaken: p.totalDamageTaken,
-			totalHeal: p.totalHeal,
-			visionScore: p.visionScore,
-			goldEarned: p.goldEarned,
-			champLevel: p.champLevel,
-			totalMinionsKilled: p.totalMinionsKilled,
-			neutralMinionsKilled: p.neutralMinionsKilled,
-			score: p.kills + p.assists - p.deaths,
-			win: p.win,
+		created_at: match.info.gameCreation,
+		duration: match.info.gameDuration,
+		match_id: match.metadata.matchId,
+		players: match.info.participants.map((p) => ({
+			items: [p.item0, p.item1, p.item2, p.item3, p.item4, p.item5, p.item6],
+			insights: {
+				multikill: p.largestMultiKill,
+				killingSpree: p.largestKillingSpree,
+				firstBlood: p.firstBloodKill,
+			},
+			champion: {
+				id: p.championId,
+				name: p.championName,
+				level: p.champLevel,
+				role: p.individualPosition,
+			},
+			damage: {
+				magic: p.magicDamageDealtToChampions,
+				physical: p.physicalDamageDealtToChampions,
+				true: p.trueDamageDealtToChampions,
+			},
+			runes: {
+				primary: p.perks.styles[0].style,
+				secondary: p.perks.styles[1].style,
+			},
+			info: {
+				puuid: p.puuid,
+				summonerName: p.summonerName,
+				riotIdGameName: p.riotIdGameName,
+				riotIdTagline: p.riotIdTagline,
+				summonerId: p.summonerId,
+			},
+			summoners: {
+				spell1: p.summoner1Id,
+				spell2: p.summoner2Id,
+			},
+			team: {
+				id: p.teamId,
+				win: p.win,
+			},
+			stats: {
+				kills: p.kills,
+				deaths: p.deaths,
+				assists: p.assists,
+				visionScore: p.visionScore,
+				totalMinionsKilled: p.totalMinionsKilled,
+				neutralMinionsKilled: p.neutralMinionsKilled,
+			},
 		})),
 	};
 }

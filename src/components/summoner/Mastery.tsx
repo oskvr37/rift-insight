@@ -12,18 +12,22 @@ export default async function SummonerMastery({
 	const mastery = await championMasteryByPuuid(puuid, server);
 
 	return (
-		<section>
-			<h1>Champion Mastery</h1>
-			<div className="flex gap-2">
+		<section className="space-y-2">
+			<div className="flex justify-between">
+			<h2>Champion Mastery</h2>
+			<p className="dark:text-slate-300">See more</p>
+			</div>
+			<div className="flex gap-2 dark:text-slate-300 justify-between dark:bg-slate-800 bg-slate-100 p-2 rounded">
 				{mastery.map((m) => (
-					<div key={m.championId}>
-						<img
-							src={championIcon(m.championId)}
-							alt=""
-							className="rounded-xl size-16"
-						/>
-						<h2>{m.championLevel} lvl</h2>
-						<p>{m.championPoints.toLocaleString()}</p>
+					<div key={m.championId} className="flex gap-2 items-center">
+						<img src={championIcon(m.championId)} alt="" className="size-12" />
+						<div>
+							<p className="space-x-1 text-cyan-400">
+								<span className="text-xl">{m.championLevel}</span>
+								<span>lvl</span>
+							</p>
+							<p>{m.championPoints.toLocaleString()}</p>
+						</div>
 					</div>
 				))}
 			</div>
