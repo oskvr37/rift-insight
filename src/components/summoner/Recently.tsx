@@ -30,18 +30,14 @@ export default async function Recently({
 	return (
 		<section className="space-y-2">
 			<h2>Recently played with</h2>
-			<div className="space-y-2 dark:bg-slate-800 bg-slate-300 p-2 rounded dark:text-slate-300">
+			<div className="space-y-2 dark:bg-slate-800 bg-slate-100 p-2 rounded dark:text-slate-300 divide-y dark:divide-slate-600 ">
 				{data.map((p) => (
-					<div
-						key={p.summonerName}
-						className="flex gap-2 items-center justify-between"
-					>
+					<div key={p.summonerName} className="flex gap-2 items-center">
 						<span className="mr-auto">
 							{p.summonerName} #{p.riotIdTagline}
 						</span>
-						<progress value={p.win} max={p.games} className="h-2 w-1/3" />
 						<span className="dark:text-slate-400 text-sm">
-							{(100 * (p.win / p.games)).toFixed(0)}%
+							{p.games} games ({(100 * (p.win / p.games)).toFixed(0)}%)
 						</span>
 					</div>
 				))}
