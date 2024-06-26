@@ -3,11 +3,21 @@
 @tailwind utilities;
 
 body {
+	@apply bg-slate-200 text-slate-900;
 	@apply dark:bg-slate-900 dark:text-slate-50;
 }
 
-main {
+main,
+header > div,
+footer {
 	@apply p-2 max-w-screen-xl mx-auto;
+}
+
+header {
+	@apply dark:bg-slate-900/50;
+	@apply sticky top-0 z-10;
+	@apply backdrop-blur;
+	@apply shadow;
 }
 
 input,

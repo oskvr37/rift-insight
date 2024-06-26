@@ -32,7 +32,7 @@ export default async function Recently({
       <h2>Recently played with</h2>
       <div className="space-y-2">
         {data.map((p) => (
-          <div key={p.summonerName} className="bg-slate-800 p-2 rounded">
+          <div key={p.summonerName} className="dark:bg-slate-800 bg-slate-300 p-2 rounded">
             <span className="font-bold">{p.summonerName}</span>
             {" #"}
             {p.riotIdTagline}

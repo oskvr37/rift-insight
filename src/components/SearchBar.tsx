@@ -51,9 +51,9 @@ export default function SearchBar() {
 		<section>
 			{error && <p className="text-red-400 text-sm">{error}</p>}
 			<form onSubmit={handleSubmit} className="flex gap-2 fadein">
-				<div className="flex rounded bg-slate-800 w-full">
+				<div className="flex rounded dark:bg-slate-800 border-slate-300 dark:border-transparent border w-full">
 					<select
-						className="bg-slate-700 rounded px-2"
+						className="dark:bg-slate-700 bg-slate-200/25 rounded-l px-2"
 						value={server}
 						required
 						onChange={(event) => {
