@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import {Exo_2} from "next/font/google"
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -12,6 +13,11 @@ const SearchBar = dynamic(() => import("@/components/SearchBar"), {
 	ssr: false,
 });
 
+const font = Exo_2({
+	subsets: ["latin"],
+	weight: ["300", "400", "500"]
+})
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -19,7 +25,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body>
+			<body className={font.className}>
 				<header>
 					<div className="flex items-center justify-between">
 						<Link href="/">Rift Insight</Link>
