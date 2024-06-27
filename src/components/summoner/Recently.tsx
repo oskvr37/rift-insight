@@ -58,10 +58,13 @@ export default async function Recently({
 							</span>
 						</p>
 						<div className="flex gap-2">
-							{p.matches.map((m: boolean) => (
+							{p.matches.map((m: boolean, index) => (
 								<div
+									key={index}
 									className={`size-4 rounded ${
-										m ? "dark:bg-cyan-600 bg-cyan-400" : "dark:bg-slate-700 bg-slate-300"
+										m
+											? "dark:bg-cyan-600 bg-cyan-400"
+											: "dark:bg-slate-700 bg-slate-300"
 									}`}
 								/>
 							))}
