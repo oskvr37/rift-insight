@@ -45,9 +45,12 @@ export default async function Recently({
 	return (
 		<section className="space-y-2">
 			<h2>Recently played with</h2>
-			<div className="space-y-2 dark:bg-slate-800 bg-slate-100 p-2 rounded dark:text-slate-300 divide-y dark:divide-slate-600 ">
+			<div className="space-y-1">
 				{data.map((p) => (
-					<div key={p.info.riotIdGameName} className="flex gap-2 items-center">
+					<div
+						key={p.info.riotIdGameName}
+						className="flex gap-2 items-center dark:bg-slate-800 bg-slate-100 px-2 py-1 rounded dark:text-slate-300 shadow"
+					>
 						<p className="mr-auto">
 							{p.info.riotIdGameName}{" "}
 							<span className="text-sm dark:text-slate-400 font-light">
@@ -58,7 +61,7 @@ export default async function Recently({
 							{p.matches.map((m: boolean) => (
 								<div
 									className={`size-4 rounded ${
-										m ? "dark:bg-cyan-600" : "dark:bg-slate-700"
+										m ? "dark:bg-cyan-600 bg-cyan-400" : "dark:bg-slate-700 bg-slate-300"
 									}`}
 								/>
 							))}

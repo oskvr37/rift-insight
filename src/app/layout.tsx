@@ -33,10 +33,10 @@ export default function RootLayout({
 					</div>
 				</header>
 				{children}
-				<footer>
+				<footer className="grid grid-cols-2">
 					<div>
-						<p>&copy; 2024 Rift Insight</p>
-						<p className="text-xs">
+						<p className="text-sm font-light">&copy; 2024 Rift Insight</p>
+						<p className="text-xs font-light dark:text-slate-300">
 							Rift Insight is not endorsed by Riot Games and does not reflect
 							the views or opinions of Riot Games or anyone officially involved
 							in producing or managing League of Legends. League of Legends and

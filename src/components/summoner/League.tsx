@@ -19,12 +19,14 @@ export default async function SummonerLeague({
 			<h2>League data</h2>
 			{league.map((l) => (
 				<div className="space-y-1" key={l.tier}>
-					<span className="text-xs font-light">{l.queueType}</span>
+					<span className="text-xs text-slate-500 dark:text-slate-300">
+						{l.queueType}
+					</span>
 					<div
 						key={l.queueType}
-						className={`flex gap-4 dark:bg-slate-800 bg-slate-100 px-4 rounded items-center relative overflow-hidden justify-between`}
+						className={`flex gap-4 dark:bg-slate-800 bg-slate-100 px-4 rounded items-center relative overflow-hidden justify-between shadow`}
 					>
-						<div className="z-10 font-thin">
+						<div className="z-10 font-light">
 							<h2 className="text-xl capitalize">
 								{l.tier.toLowerCase()} {l.rank}
 							</h2>

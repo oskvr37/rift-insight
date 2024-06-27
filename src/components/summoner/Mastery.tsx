@@ -13,11 +13,11 @@ export default async function SummonerMastery({
 
 	return (
 		<section className="space-y-2">
-			<div className="flex justify-between">
-			<h2>Champion Mastery</h2>
-			<p className="dark:text-slate-300">See more</p>
+			<div className="flex justify-between items-end">
+				<h2>Champion Mastery</h2>
+				<p className="dark:text-slate-300 text-slate-500 text-sm">See more</p>
 			</div>
-			<div className="flex gap-2 dark:text-slate-300 justify-between dark:bg-slate-800 bg-slate-100 p-2 rounded">
+			<div className="flex gap-2 dark:text-slate-300 justify-between dark:bg-slate-800 bg-slate-100 p-2 rounded shadow">
 				{mastery.map((m) => (
 					<div key={m.championId} className="flex gap-2 items-center">
 						<img src={championIcon(m.championId)} alt="" className="size-12" />
