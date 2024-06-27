@@ -12,34 +12,63 @@ export default async function Recently({
 }) {
 	const matches = await gatherMatches(puuid, region, page);
 
-	const playedWith: Record<string, any> = {};
+	const playedWith: Record<
+		string,
+		{
+			info: {
+				riotIdGameName: string;
+				riotIdTagline: string;
+				puuid: string;
+			};
+			matches: boolean[];
+		}
+	> = {};
 	matches.map((m) =>
 		m.players.map((p) => {
 			if (p.info.puuid === puuid) return;
+			if (m.player.team.id !== p.team.id) return;
+
 			if (playedWith[p.info.puuid]) {
-				playedWith[p.info.puuid].games += 1;
-				playedWith[p.info.puuid].win += p.team.win ? 1 : 0;
+				playedWith[p.info.puuid].matches.push(p.team.win);
 			} else {
-				playedWith[p.info.puuid] = p;
-				playedWith[p.info.puuid] = { ...p, games: 1, win: p.team.win ? 1 : 0 };
+				playedWith[p.info.puuid] = {
+					...p,
+					matches: [p.team.win],
+				};
 			}
 		})
 	);
 
-	const data = Object.values(playedWith).filter((p) => p.games > 1);
+	const data = Object.values(playedWith).filter((p) => p.matches.length > 1);
+	// ✨ handle empty state
 
 	return (
 		<section className="space-y-2">
 			<h2>Recently played with</h2>
-			<div className="space-y-2 dark:bg-slate-800 bg-slate-100 p-2 rounded dark:text-slate-300 divide-y dark:divide-slate-600 ">
+			<div className="space-y-1">
 				{data.map((p) => (
-					<div key={p.summonerName} className="flex gap-2 items-center">
-						<span className="mr-auto">
-							{p.info.riotIdGameName} #{p.info.riotIdTagline}
-						</span>
-						<span className="dark:text-slate-400 text-sm">
-							{p.games} games ({(100 * (p.win / p.games)).toFixed(0)}%)
-						</span>
+					<div
+						key={p.info.riotIdGameName}
+						className="flex gap-2 items-center dark:bg-slate-800 bg-slate-100 px-2 py-1 rounded dark:text-slate-300 shadow"
+					>
+						<p className="mr-auto">
+							{p.info.riotIdGameName}{" "}
+							<span className="text-sm dark:text-slate-400 font-light">
+								#{p.info.riotIdTagline}
+							</span>
+						</p>
+						<div className="flex gap-2">
+							{p.matches.map((m: boolean, index) => (
+								<div
+									key={index}
+									className={`size-4 rounded ${
+										m
+											? "dark:bg-cyan-600 bg-cyan-400"
+											: "dark:bg-slate-700 bg-slate-300"
+									}`}
+								/>
+							))}
+						</div>
 					</div>
 				))}
 			</div>

@@ -61,23 +61,23 @@ export default async function Page({
 					summonerLevel={summonerData.summonerLevel}
 					profileIconId={summonerData.profileIconId}
 				/>
-				<section>
+				{/* <section>
 					<h2>Performance overview</h2>
 				</section>
 				<section>
 					<h3>Add to favorites</h3>
-				</section>
+				</section> */}
 			</div>
-			<div className="lg:grid grid-cols-8 gap-8">
+			<div className="lg:grid grid-cols-8 gap-8 max-sm:space-y-2">
 				<div className="space-y-4 col-span-3 w-full">
 					<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
 					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
 					<Suspense fallback={<div>Loading...</div>}>
 						<Recently puuid={summonerData.puuid} region={region} page={1} />
 					</Suspense>
-					<section>
+					{/* <section>
 						<h2>Points graph</h2>
-					</section>
+					</section> */}
 				</div>
 				<div className="col-span-5">
 					<Suspense fallback={<div>Loading...</div>}>

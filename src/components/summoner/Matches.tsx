@@ -5,8 +5,9 @@ import { cache } from "react";
 import { championIcon } from "@/utils/dragon";
 
 type GatheredMatch = FormattedMatch & {
-	won: boolean;
 	player: FormattedMatch["players"][0];
+	player_team: FormattedMatch["players"];
+	enemy_team: FormattedMatch["players"];
 };
 
 export const gatherMatches = cache(
@@ -34,10 +35,19 @@ export const gatherMatches = cache(
 			})
 				.then((res) => res.json())
 				.then((match: FormattedMatch) => {
+					const player = match.players.find((p) => p.info.puuid === puuid)!;
+					const player_team = match.players.filter(
+						(p) => p.team.win === player.team.win
+					);
+					const enemy_team = match.players.filter(
+						(p) => p.team.win !== player.team.win
+					);
+
 					matches.push({
 						...match,
-						player: match.players.find((p) => p.info.puuid === puuid)!,
-						won: match.players.find((p) => p.info.puuid === puuid)!.team.win,
+						player,
+						player_team,
+						enemy_team,
 					});
 				});
 		}
@@ -59,6 +69,7 @@ export default async function SummonerMatches({
 		<section className="space-y-2">
 			<div>
 				<h1>Matches</h1>
+				{/* ✨ add quick summary */}
 				{/* <div>Winrate, KDA, etc.</div> */}
 			</div>
 			<div className="space-y-2">
@@ -75,25 +86,8 @@ function Match({ match }: { match: GatheredMatch }) {
 		.toString()
 		.padStart(2, "0")}`;
 
-	return (
-		<article
-			key={match.match_id}
-			className={`rounded p-2 space-y-2 ${
-				match.won
-					? "dark:bg-cyan-900 bg-cyan-400/25"
-					: "dark:bg-slate-800 bg-slate-100"
-			}`}
-		>
-			<div className="flex gap-2 text-xs dark:text-slate-300">
-				<span>
-					{new Date(match.created_at).toLocaleString("en-US", {
-						month: "2-digit",
-						day: "2-digit",
-						year: "2-digit",
-					})}
-				</span>
-				<span>{duration}</span>
-			</div>
+	function Summary() {
+		return (
 			<div>
 				<p>
 					{match.player.champion.name} {match.player.champion.level} lvl |{" "}
@@ -119,7 +113,6 @@ function Match({ match }: { match: GatheredMatch }) {
 					Runes {match.player.runes.primary} {match.player.runes.secondary}
 				</p>
 				<p>Items {match.player.items.join(" ")}</p>
-				{/* insights */}
 				<div className="flex gap-2">
 					{match.player.insights.firstBlood && <p>First blood</p>}
 					{match.player.insights.killingSpree > 0 && (
@@ -130,15 +123,58 @@ function Match({ match }: { match: GatheredMatch }) {
 					)}
 				</div>
 			</div>
-			<div className="flex gap-2">
-				{match.players.map((player) => (
-					<div key={player.champion.id} className="flex gap-2">
-						<div>
-							<img className="size-8" src={championIcon(player.champion.id)} />
-						</div>
-					</div>
-				))}
-			</div>
+		);
+	}
+
+	return (
+		<article
+			key={match.match_id}
+			className={`rounded p-2 space-y-2 ${
+				match.player.team.win
+					? "dark:bg-cyan-900 bg-cyan-400/25"
+					: "dark:bg-slate-800 bg-slate-100"
+			}`}
+		>
+			<section className="flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between">
+				<div className="flex gap-2">
+					<span>{match.player.team.win ? "Victory" : "Defeat"}</span>
+					<span>&#8226;</span>
+					<span>{duration}</span>
+				</div>
+				<div className="flex gap-1 items-center">
+					{match.player_team.map((player) => (
+						<img
+							key={player.champion.id}
+							src={championIcon(player.champion.id)}
+							alt=""
+							className="size-5"
+						/>
+					))}
+					<div />
+					{match.enemy_team.map((player) => (
+						<img
+							key={player.champion.id}
+							src={championIcon(player.champion.id)}
+							alt=""
+							className="size-5"
+						/>
+					))}
+				</div>
+				<span>
+					{new Date(match.created_at).toLocaleString("en-US", {
+						month: "2-digit",
+						day: "2-digit",
+						year: "2-digit",
+					})}
+				</span>
+			</section>
+			<section className="flex gap-2 items-center">
+				<img
+					src={championIcon(match.player.champion.id)}
+					alt={match.player.champion.name}
+					className="size-12"
+				/>
+			</section>
 		</article>
 	);
 }
