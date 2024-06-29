@@ -33,7 +33,7 @@ export default function RootLayout({
 					</div>
 				</header>
 				{children}
-				<footer className="grid grid-cols-2">
+				<footer className="lg:grid grid-cols-2">
 					<div>
 						<p className="text-sm font-light">&copy; 2024 Rift Insight</p>
 						<p className="text-xs font-light dark:text-slate-300">

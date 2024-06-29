@@ -68,7 +68,7 @@ export default async function Page({
 					<h3>Add to favorites</h3>
 				</section> */}
 			</div>
-			<div className="lg:grid grid-cols-8 gap-8 max-sm:space-y-2">
+			<div className="lg:grid grid-cols-8 gap-8 max-lg:space-y-4">
 				<div className="space-y-4 col-span-3 w-full">
 					<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
 					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />

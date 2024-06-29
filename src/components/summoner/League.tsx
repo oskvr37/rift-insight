@@ -15,34 +15,33 @@ export default async function SummonerLeague({
 	// 💡 put rank chart between text and emblem
 
 	return (
-		<section className="space-y-2">
-			<h2>League data</h2>
+		<section className="space-y-4">
 			{league.map((l) => (
-				<div className="space-y-1" key={l.tier}>
-					<span className="text-xs text-slate-500 dark:text-slate-300">
-						{l.queueType}
-					</span>
+				<div className="space-y-2" key={l.tier}>
+					<h2 className="">{normalizeQueueType(l.queueType)}</h2>
 					<div
 						key={l.queueType}
 						className={`flex gap-4 dark:bg-slate-800 bg-slate-100 px-4 rounded items-center relative overflow-hidden justify-between shadow`}
 					>
 						<div className="z-10 font-light">
-							<h2 className="text-xl capitalize">
-								{l.tier.toLowerCase()} {l.rank}
-							</h2>
-							<span className="dark:text-cyan-400">{l.leaguePoints} LP</span>
-							<span className="dark:text-slate-300">
-								{" "}
-								{l.wins}W {l.losses}L
-							</span>
+							<h3 className="text-xl capitalize">
+								{l.tier.toLowerCase()} {l.rank}{" "}
+								<span className="text-base dark:text-slate-400">
+									{l.leaguePoints} LP
+								</span>
+							</h3>
+							<div className="flex gap-2 dark:text-slate-400">
+								<span>
+									{l.wins} / {l.losses}
+								</span>
+								<span>{Math.round((l.wins / (l.wins + l.losses)) * 100)}%</span>
+							</div>
 						</div>
-						{l.tier && (
-							<img
-								className="size-24 z-10"
-								src={`/ranked/${l.tier.toLowerCase()}.png`}
-								alt={l.tier}
-							/>
-						)}
+						<img
+							className="size-24 z-10"
+							src={`/ranked/${l.tier.toLowerCase()}.png`}
+							alt={l.tier}
+						/>
 						<img
 							src={`/ranked/${l.tier.toLowerCase()}.png`}
 							alt="Emblem"
@@ -53,4 +52,15 @@ export default async function SummonerLeague({
 			))}
 		</section>
 	);
+}
+
+function normalizeQueueType(queueType: string) {
+	switch (queueType) {
+		case "RANKED_SOLO_5x5":
+			return "Ranked Solo/Duo";
+		case "RANKED_FLEX_SR":
+			return "Ranked Flex";
+		default:
+			return queueType;
+	}
 }
