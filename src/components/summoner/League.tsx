@@ -34,7 +34,7 @@ export default async function SummonerLeague({
 								<span>
 									{l.wins} / {l.losses}
 								</span>
-								<span>{Math.round((l.wins / (l.wins + l.losses)) * 100)}%</span>
+								<span className="text-cyan-500 font-medium">{Math.round((l.wins / (l.wins + l.losses)) * 100)}%</span>
 							</div>
 						</div>
 						<img

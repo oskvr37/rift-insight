@@ -155,7 +155,7 @@ function Match({ match }: { match: GatheredMatch }) {
 			<section
 				className={`flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between p-2 rounded-t shadow ${
 					match.player.team.win
-						? "dark:bg-cyan-900 bg-cyan-400/25"
+						? "dark:bg-cyan-900 bg-cyan-500"
 						: "dark:bg-slate-700 bg-slate-300"
 				}`}
 			>
