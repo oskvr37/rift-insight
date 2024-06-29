@@ -22,7 +22,7 @@ export default async function SummonerProfile({
 			/>
 			<div>
 				<h1 className="text-2xl">
-					{gameName} <span className="text-sm text-cyan-400">#{tagLine}</span>
+					{gameName} <span className="text-sm text-cyan-500">#{tagLine}</span>
 				</h1>
 				<span className="dark:text-slate-300">{summonerLevel} lvl</span>
 			</div>

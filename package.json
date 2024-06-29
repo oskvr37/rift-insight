@@ -12,6 +12,7 @@
     "dragon": "node scripts/dragon.mjs"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
     "@prisma/client": "^5.15.0",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",

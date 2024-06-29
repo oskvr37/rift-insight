@@ -63,7 +63,7 @@ export default async function Recently({
 									key={index}
 									className={`size-4 rounded ${
 										m
-											? "dark:bg-cyan-600 bg-cyan-400"
+											? "dark:bg-cyan-600 bg-cyan-500"
 											: "dark:bg-slate-700 bg-slate-300"
 									}`}
 								/>

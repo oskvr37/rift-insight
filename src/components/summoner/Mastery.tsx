@@ -30,7 +30,7 @@ export default async function SummonerMastery({
 						<img src={championIcon(m.championId)} alt="" className="size-12" />
 						<div>
 							<p className="dark:text-slate-400">
-								<span className="text-xl dark:text-cyan-400">
+								<span className="text-xl dark:text-cyan-500">
 									{m.championLevel}
 								</span>{" "}
 								lvl

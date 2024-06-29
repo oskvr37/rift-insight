@@ -14,7 +14,7 @@ footer {
 }
 
 header {
-	@apply dark:bg-slate-900/50;
+	@apply dark:bg-slate-900/75;
 	@apply sticky top-0 z-10;
 	@apply backdrop-blur;
 	@apply shadow;
@@ -37,7 +37,7 @@ progress {
 
 ::-webkit-progress-value {
 	@apply rounded;
-	@apply bg-cyan-400;
+	@apply bg-cyan-500;
 }
 
 ::-webkit-progress-bar {
