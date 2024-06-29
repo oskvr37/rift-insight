@@ -2,7 +2,7 @@ import { REGIONS } from "@/types";
 import { FormattedMatch } from "@/app/api/summoner/[puuid]/match/[match_id]/route";
 import { matchesByPuuid } from "@/utils/api";
 import { cache } from "react";
-import { championIcon } from "@/utils/dragon";
+import { championIcon, itemIcon, spellIcon } from "@/utils/dragon";
 
 type GatheredMatch = FormattedMatch & {
 	player: FormattedMatch["players"][0];
@@ -72,7 +72,7 @@ export default async function SummonerMatches({
 				{/* ✨ add quick summary */}
 				{/* <div>Winrate, KDA, etc.</div> */}
 			</div>
-			<div className="space-y-2">
+			<div className="space-y-4">
 				{matches.map((match) => (
 					<Match key={match.match_id} match={match} />
 				))}
@@ -86,24 +86,30 @@ function Match({ match }: { match: GatheredMatch }) {
 		.toString()
 		.padStart(2, "0")}`;
 
+	// 💡 add role/position icon `match.player.champion.role`
+
+	const playerTeamKills = match.player_team.reduce(
+		(acc, player) => acc + player.stats.kills,
+		0
+	);
+
+	const playerKillParticipation = Math.round(
+		((match.player.stats.kills + match.player.stats.assists) /
+			playerTeamKills) *
+			100
+	);
+
+	const playerKDA =
+		(match.player.stats.kills + match.player.stats.assists) /
+		match.player.stats.deaths;
+
 	function Summary() {
 		return (
 			<div>
 				<p>
-					{match.player.champion.name} {match.player.champion.level} lvl |{" "}
-					{match.player.champion.role}
-				</p>
-				<p>
-					{match.player.stats.kills} / {match.player.stats.deaths} /{" "}
-					{match.player.stats.assists}
-				</p>
-				<p>
 					{match.player.stats.visionScore} vision |{" "}
 					{match.player.stats.totalMinionsKilled} CS |{" "}
 					{match.player.stats.neutralMinionsKilled} jungle
-				</p>
-				<p>
-					Spells {match.player.summoners.spell1} {match.player.summoners.spell2}
 				</p>
 				<p>
 					Physical {match.player.damage.physical} / Magic{" "}
@@ -112,7 +118,6 @@ function Match({ match }: { match: GatheredMatch }) {
 				<p>
 					Runes {match.player.runes.primary} {match.player.runes.secondary}
 				</p>
-				<p>Items {match.player.items.join(" ")}</p>
 				<div className="flex gap-2">
 					{match.player.insights.firstBlood && <p>First blood</p>}
 					{match.player.insights.killingSpree > 0 && (
@@ -121,25 +126,6 @@ function Match({ match }: { match: GatheredMatch }) {
 					{match.player.insights.multikill > 0 && (
 						<p>{match.player.insights.multikill} multikill</p>
 					)}
-				</div>
-			</div>
-		);
-	}
-
-	return (
-		<article
-			key={match.match_id}
-			className={`rounded p-2 space-y-2 ${
-				match.player.team.win
-					? "dark:bg-cyan-900 bg-cyan-400/25"
-					: "dark:bg-slate-800 bg-slate-100"
-			}`}
-		>
-			<section className="flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between">
-				<div className="flex gap-2">
-					<span>{match.player.team.win ? "Victory" : "Defeat"}</span>
-					<span>&#8226;</span>
-					<span>{duration}</span>
 				</div>
 				<div className="flex gap-1 items-center">
 					{match.player_team.map((player) => (
@@ -160,6 +146,24 @@ function Match({ match }: { match: GatheredMatch }) {
 						/>
 					))}
 				</div>
+			</div>
+		);
+	}
+
+	function Header() {
+		return (
+			<section
+				className={`flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between p-2 rounded-t shadow ${
+					match.player.team.win
+						? "dark:bg-cyan-900 bg-cyan-400/25"
+						: "dark:bg-slate-700 bg-slate-300"
+				}`}
+			>
+				<div className="flex gap-2">
+					<span>{match.player.team.win ? "Victory" : "Defeat"}</span>
+					<span>&#8226;</span>
+					<span>{duration}</span>
+				</div>
 				<span>
 					{new Date(match.created_at).toLocaleString("en-US", {
 						month: "2-digit",
@@ -168,13 +172,74 @@ function Match({ match }: { match: GatheredMatch }) {
 					})}
 				</span>
 			</section>
-			<section className="flex gap-2 items-center">
-				<img
-					src={championIcon(match.player.champion.id)}
-					alt={match.player.champion.name}
-					className="size-12"
-				/>
+		);
+	}
+
+	function Items() {
+		const items = match.player.items.slice(0, 6).sort((a, b) => b - a);
+		items.push(match.player.items[6]);
+
+		return (
+			<div className="flex gap-1">
+				{items.map((item) => (
+					<Item key={item} item={item} />
+				))}
+			</div>
+		);
+	}
+
+	return (
+		<article
+			key={match.match_id}
+			className={`rounded dark:bg-slate-800 bg-slate-100 shadow`}
+		>
+			<Header />
+			<section className="space-y-2 p-2">
+				<div className="grid md:grid-cols-2 gap-2 items-center">
+					<div className="flex gap-2 items-center">
+						<img
+							src={championIcon(match.player.champion.id)}
+							alt={match.player.champion.name}
+							className="size-12"
+						/>
+						<div className="flex gap-4">
+							<div>
+								<p>
+									{match.player.champion.name} {match.player.champion.level} lvl
+								</p>
+								<p>
+									{match.player.stats.kills} / {match.player.stats.deaths} /{" "}
+									{match.player.stats.assists}
+								</p>
+							</div>
+							<div>
+								<p>{playerKillParticipation}% KP</p>
+								<p>{playerKDA.toFixed(2)} KDA</p>
+							</div>
+						</div>
+					</div>
+					<div className="flex gap-1">
+						<img
+							src={spellIcon(match.player.summoners.spell1)}
+							alt=""
+							className="size-6"
+						/>
+						<img
+							src={spellIcon(match.player.summoners.spell2)}
+							alt=""
+							className="size-6"
+						/>
+						<Items />
+					</div>
+				</div>
 			</section>
+			{/* <Summary /> */}
 		</article>
 	);
+}
+
+function Item({ item }: { item: number }) {
+	if (item === 0)
+		return <div className="size-6 dark:bg-slate-700  rounded shadow" />;
+	return <img src={itemIcon(item)} alt="" className="size-6 rounded" />;
 }

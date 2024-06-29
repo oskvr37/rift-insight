@@ -6,15 +6,25 @@ console.log("⚙️ Latest version:", versions[0]);
 const baseUrl = `https://ddragon.leagueoflegends.com/cdn/${versions[0]}`;
 console.log("✨ Base URL:", baseUrl);
 
-const { data: champions } = await getChampions(baseUrl);
+const { data: champions } = await fetchDragon(
+	baseUrl,
+	"data/en_US/champion.json"
+);
 console.log("🐉 Champions:", Object.keys(champions).length);
+
+const { data: summoners } = await fetchDragon(
+	baseUrl,
+	"data/en_US/summoner.json"
+);
+console.log("🔮 Summoner:", Object.keys(summoners).length);
+
 if (!existsSync("./src/utils")) {
 	mkdirSync("./src/public");
 }
 
 writeFileSync(
 	"./src/utils/dragon.json",
-	JSON.stringify({ baseUrl, champions })
+	JSON.stringify({ baseUrl, champions, summoners })
 );
 console.log("✅ Config saved in: /src/utils/dragon.json");
 
@@ -32,12 +42,14 @@ async function getVersions() {
 	return await request.json();
 }
 
-async function getChampions(baseUrl) {
-	const request = await fetch(`${baseUrl}/data/en_US/champion.json`);
+async function fetchDragon(baseUrl, endpoint) {
+	const url = `${baseUrl}/${endpoint}`;
+	console.log("🔗 Fetch", url);
+	const request = await fetch(url);
 
 	if (!request.ok) {
 		throw new Error(
-			`❌ getChampions (${request.status}) - ${request.statusText}`
+			`❌ fetch ${endpoint} (${request.status}) - ${request.statusText}`
 		);
 	}
 
