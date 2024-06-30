@@ -73,6 +73,7 @@ export default async function SummonerMatches({
 				{/* <div>Winrate, KDA, etc.</div> */}
 			</div>
 			<div className="space-y-4">
+				{matches.length === 0 && <p className="dark:text-slate-400">Nothing found!</p>}
 				{matches.map((match) => (
 					<Match key={match.match_id} match={match} />
 				))}
