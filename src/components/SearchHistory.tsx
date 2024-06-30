@@ -18,7 +18,7 @@ export default function SearchHistory() {
 					{Array.from(searchHistory.values() || []).map(([key, record]) => (
 						<div key={key}>
 							<Link
-								href={`/summoner/${record.normalized_server}/${record.summonerName}-${record.tagLine}`}
+								href={`/summoner/${record.normalized_server}/${record.url}`}
 							>
 								<span>
 									{record.summonerName}#{record.tagLine}
@@ -62,7 +62,7 @@ export default function SearchHistory() {
 					{Object.values(favorites).map((record) => (
 						<div key={record.summonerName + record.tagLine}>
 							<Link
-								href={`/summoner/${record.normalized_server}/${record.summonerName}-${record.tagLine}`}
+								href={`/summoner/${record.normalized_server}/${record.url}`}
 							>
 								<span>
 									{record.summonerName}#{record.tagLine}

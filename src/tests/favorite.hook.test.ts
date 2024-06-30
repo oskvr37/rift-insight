@@ -11,9 +11,9 @@ const RECORD = {
 	normalized_server: SERVERS_NORMALIZED[SERVERS[0]],
 	summonerName: "test",
 	tagLine: "1234",
+	url: "test-1234",
+	profileIconId: 1,
 };
-
-const RECORD_KEY = `${RECORD.summonerName.toLowerCase()}#${RECORD.tagLine.toLowerCase()}`;
 
 describe("useFavorites", () => {
 	beforeEach(() => {
@@ -32,7 +32,7 @@ describe("useFavorites", () => {
 			result.current.addFavorite(RECORD);
 		});
 
-		expect(result.current.favorites).toEqual({ [RECORD_KEY]: RECORD });
+		expect(result.current.favorites).toEqual({ [`${RECORD.normalized_server}/${RECORD.url}`]: RECORD });
 	});
 
 	test("should remove a favorite", () => {

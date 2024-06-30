@@ -69,5 +69,7 @@ export type SearchRecord = {
 	normalized_server: SERVERS_NORMALIZED;
 	summonerName: string;
 	tagLine: string;
+	url: string;
+	profileIconId: number;
 };
 

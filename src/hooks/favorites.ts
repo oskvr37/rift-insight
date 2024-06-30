@@ -12,29 +12,27 @@ export default function useFavorites(): {
 	>("favorites", {});
 
 	function addFavorite(record: SearchRecord) {
-		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
+		if (favorites[getKey(record)]) return;
 
-		if (favorites[key]) return;
-
-		setFavorites({ ...favorites, [key]: record });
+		setFavorites({ ...favorites, [getKey(record)]: record });
 	}
 
 	function removeFavorite(record: SearchRecord) {
-		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
-
-		if (!favorites[key]) return;
+		if (!favorites[getKey(record)]) return;
 
 		const new_favorites = { ...favorites };
-		delete new_favorites[key];
+		delete new_favorites[getKey(record)];
 
 		setFavorites(new_favorites);
 	}
 
 	function isFavorite(record: SearchRecord) {
-		const key = `${record.summonerName.toLowerCase()}#${record.tagLine.toLowerCase()}`;
-
-		return !!favorites[key];
+		return !!favorites[getKey(record)];
 	}
 
 	return { favorites, addFavorite, removeFavorite, isFavorite };
+}
+
+function getKey(record: SearchRecord) {
+	return `${record.normalized_server}/${record.url}`;
 }
