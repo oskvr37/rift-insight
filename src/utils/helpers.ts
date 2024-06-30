@@ -1,4 +1,9 @@
-import { SERVERS, REGIONS } from "@/types";
+import {
+	SERVERS,
+	REGIONS,
+	SERVERS_UNNORMALIZED,
+	SERVERS_NORMALIZED,
+} from "@/types";
 import { GameData } from "@/types/match";
 
 export function queryToString(query: Record<string, any>) {
@@ -98,3 +103,35 @@ export function formatMatch(match: GameData) {
 }
 
 export type FormattedMatch = ReturnType<typeof formatMatch>;
+
+export function parseSummoner(
+	summoner: string,
+	normalized_server: SERVERS_NORMALIZED
+) {
+	const server = normalized_server.toUpperCase();
+
+	if (typeof server !== "string" || typeof summoner !== "string") {
+		throw new Error("Server and summoner must be strings");
+	}
+	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED]) {
+		throw new Error("Invalid server");
+	}
+
+	const split = decodeURIComponent(summoner).split("-");
+	if (split.length !== 2) {
+		throw new Error("Invalid summoner format");
+	}
+
+	// ✨ add regex validation for gameName and tagLine
+
+	const gameName = encodeSummoner(split[0]);
+	const tagLine = split[1].toLowerCase();
+
+	const riotServer = SERVERS_UNNORMALIZED[
+		server as keyof typeof SERVERS_UNNORMALIZED
+	] as SERVERS;
+
+	// console.log("[Summoner]", { gameName, split, tagLine, riotServer });
+
+	return { gameName, tagLine, riotServer };
+}
