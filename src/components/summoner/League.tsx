@@ -12,6 +12,8 @@ export default async function SummonerLeague({
 
 	const league = league_data.filter((l) => l.tier);
 
+	if (!league.length) return null;
+
 	// 💡 put rank chart between text and emblem
 
 	return (

@@ -40,7 +40,8 @@ export default async function Recently({
 	);
 
 	const data = Object.values(playedWith).filter((p) => p.matches.length > 1);
-	// ✨ handle empty state
+
+	if (!data.length) return null;
 
 	return (
 		<section className="space-y-2">
