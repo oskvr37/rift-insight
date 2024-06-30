@@ -35,14 +35,13 @@ export function encodeSummoner(summoner: string): string {
 			// replace whitespace with +
 			.replace(/\s/g, "+")
 			// remove special characters
-			.replace(/[^a-z0-9+]/gi, "")
+			.replace(/[!@#$%^&*(),.?":{}|<>]/g, "")
 			// trim multiple +
 			.replace(/\++/g, "+")
 			// trim leading and trailing +
 			.replace(/^\++|\++$/g, "")
 	);
 }
-
 
 export function formatMatch(match: GameData) {
 	return {

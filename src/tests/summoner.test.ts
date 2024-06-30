@@ -25,4 +25,16 @@ describe("encodeSummoner", () => {
 	it("trim leading and trailing +", () => {
 		expect(encodeSummoner("+Hello+World+")).toBe("hello+world");
 	});
+
+	it("should work with japanese name", () => {
+		expect(encodeSummoner("こんにちは")).toBe("こんにちは");
+	});
+
+	it("should work with korean name", () => {
+		expect(encodeSummoner("안녕하세요")).toBe("안녕하세요");
+	});
+
+	it("should work with chinese name", () => {
+		expect(encodeSummoner("你好")).toBe("你好");
+	});
 });
