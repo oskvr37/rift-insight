@@ -5,14 +5,16 @@ import { useEffect, useState } from "react";
 import { SERVERS, SERVERS_NORMALIZED } from "@/types";
 import useSearchHistory from "@/hooks/search";
 import { useLocalStorage } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
+	const { push: redirect } = useRouter();
 	const { storeRecentSearch } = useSearchHistory();
 	const [storageServer, setStorageServer] = useLocalStorage<SERVERS>(
 		"server",
 		SERVERS["2"]
 	);
-
+	const [pending, setPending] = useState(false);
 	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [serverNormalized, setServerNormalized] = useState<SERVERS_NORMALIZED>(
 		SERVERS_NORMALIZED[storageServer]
@@ -21,26 +23,18 @@ export default function SearchBar() {
 	const [error, setError] = useState<string | null>(null);
 
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		setPending(true);
 		event.preventDefault();
 
-		const split = inputValue.split("#");
-		if (split.length !== 2) {
-			setError("Invalid summoner name");
-			return;
-		}
-
-		const summonerName = split[0];
-		const tagLine = split[1];
-
-		searchUser(summonerName, tagLine, server, serverNormalized).then(() => {
-			storeRecentSearch({
-				server,
-				normalized_server: serverNormalized,
-				summonerName,
-				tagLine,
-			});
+		searchUser(inputValue, serverNormalized).then((response) => {
+			if (!response) {
+				setError("User not found");
+				return;
+			}
+			storeRecentSearch(response);
 			setInputValue("");
-		});
+			redirect(`/summoner/${response.normalized_server}/${response.url}`);
+		}).finally(() => setPending(false));
 	}
 
 	useEffect(() => {
@@ -49,7 +43,7 @@ export default function SearchBar() {
 	}, [server, setStorageServer]);
 
 	return (
-		<section>
+		<section className="space-y-1">
 			{error && <p className="text-red-400 text-sm">{error}</p>}
 			<form onSubmit={handleSubmit} className="flex gap-2 fadein">
 				<div className="flex rounded dark:bg-slate-800 border-slate-300 dark:border-transparent border w-full">
@@ -72,14 +66,16 @@ export default function SearchBar() {
 						required
 						type="text"
 						placeholder={`name#${serverNormalized}`}
+						// 🐛 make pattern work for non latin names
 						pattern="^[a-zA-Z0-9 ]{3,16}#[a-zA-Z0-9 ]{3,5}$"
 						value={inputValue}
 						onChange={(event) => setInputValue(event.target.value)}
 					/>
 				</div>
 				<button
+					disabled={pending}
 					type="submit"
-					className="px-2 py-1 rounded bg-cyan-500 text-zinc-900 font-bold"
+					className="px-2 py-1 rounded bg-cyan-500 text-zinc-900 font-bold disabled:animate-pulse"
 				>
 					Search
 				</button>
