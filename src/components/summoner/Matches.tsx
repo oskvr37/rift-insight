@@ -1,5 +1,5 @@
 import { REGIONS } from "@/types";
-import { FormattedMatch } from "@/app/api/summoner/[puuid]/match/[match_id]/route";
+import { FormattedMatch } from "@/utils/helpers";
 import { matchesByPuuid } from "@/utils/api";
 import { cache } from "react";
 import { championIcon, itemIcon, spellIcon } from "@/utils/dragon";
@@ -30,7 +30,7 @@ export const gatherMatches = cache(
 		// but we are rate limited by not having a production API key
 
 		for (const matchId of matchIds) {
-			await fetch(`${baseUrl}/api/summoner/${puuid}/match/${matchId}`, {
+			await fetch(`${baseUrl}/api/summoner/${region}/${puuid}/match/${matchId}`, {
 				cache: "force-cache",
 			})
 				.then((res) => res.json())
