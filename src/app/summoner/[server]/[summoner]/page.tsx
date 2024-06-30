@@ -1,4 +1,6 @@
 import { notFound, redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { Suspense, cache } from "react";
 
 import { SERVERS, SERVERS_NORMALIZED, SERVERS_UNNORMALIZED } from "@/types";
 
@@ -11,45 +13,31 @@ import SummonerLeague from "@/components/summoner/League";
 import SummonerMastery from "@/components/summoner/Mastery";
 import SummonerProfile from "@/components/summoner/Profile";
 import Recently from "@/components/summoner/Recently";
-import { Suspense } from "react";
 
-export default async function Page({
-	params,
-}: {
+type Props = {
 	params: { server: SERVERS_NORMALIZED; summoner: string };
-}) {
-	const server = params.server.toUpperCase();
-	const summoner = params.summoner;
+};
 
-	if (typeof server !== "string" || typeof summoner !== "string") notFound();
-	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED])
-		notFound();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { gameName, tagLine, riotServer } = await parseParams({ params });
+	const { riotAccount } = await getAccount({ gameName, tagLine, riotServer });
 
-	const split = decodeURIComponent(summoner).split("-");
+	return {
+		title: `${riotAccount.gameName}#${riotAccount.tagLine} - Summoner Stats & Insights`,
+	};
+}
 
-	if (split.length !== 2) notFound();
-
-	const gameName = encodeSummoner(split[0]);
-
-	const tagLineRegex = /^[a-z0-9]{3,5}$/;
-	const tagLine = split[1].toLowerCase();
-	if (!tagLineRegex.test(tagLine)) notFound();
-
-	const riotServer = SERVERS_UNNORMALIZED[
-		server as keyof typeof SERVERS_UNNORMALIZED
-	] as SERVERS;
-
-	// console.log("[Summoner]", { gameName, split, tagLine, riotServer });
-
-	const region = closestRegion(riotServer);
-	const riotAccount = await accountByRiotId(gameName, tagLine, region);
-
-	if (!riotAccount) notFound();
-
+export default async function Page({ params }: Props) {
+	const { gameName, tagLine, riotServer } = await parseParams({ params });
+	const { riotAccount, region } = await getAccount({
+		gameName,
+		tagLine,
+		riotServer,
+	});
 	const summonerData = await summonerByPuuid(riotAccount.puuid, riotServer);
 
 	if (!summonerData) {
-		redirect(`/summoner/${server}`);
+		redirect(`/summoner/${params.server}`);
 	}
 
 	return (
@@ -88,3 +76,47 @@ export default async function Page({
 		</main>
 	);
 }
+
+const parseParams = cache(async ({ params }: Props) => {
+	const server = params.server.toUpperCase();
+	const summoner = params.summoner;
+
+	if (typeof server !== "string" || typeof summoner !== "string") notFound();
+	if (!SERVERS_UNNORMALIZED[server as keyof typeof SERVERS_UNNORMALIZED])
+		notFound();
+
+	const split = decodeURIComponent(summoner).split("-");
+
+	if (split.length !== 2) notFound();
+
+	const gameName = encodeSummoner(split[0]);
+
+	const tagLine = split[1].toLowerCase();
+	const tagLineRegex = /^[a-z0-9]{3,5}$/;
+	if (!tagLineRegex.test(tagLine)) notFound();
+
+	const riotServer = SERVERS_UNNORMALIZED[
+		server as keyof typeof SERVERS_UNNORMALIZED
+	] as SERVERS;
+
+	// console.log("[Summoner]", { gameName, split, tagLine, riotServer });
+
+	return { gameName, tagLine, riotServer };
+});
+
+const getAccount = cache(
+	async ({
+		gameName,
+		tagLine,
+		riotServer,
+	}: {
+		gameName: string;
+		tagLine: string;
+		riotServer: SERVERS;
+	}) => {
+		const region = closestRegion(riotServer);
+		const riotAccount = await accountByRiotId(gameName, tagLine, region);
+		if (!riotAccount) notFound();
+		return { riotAccount, region };
+	}
+);
