@@ -1,14 +1,23 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata, Viewport } from "next";
 import { Exo_2 } from "next/font/google";
-// import dynamic from "next/dynamic";
 import Link from "next/link";
+// import dynamic from "next/dynamic";
+
+import "./globals.css";
 import {
 	StarIcon as StarIconSolid,
 	MagnifyingGlassIcon,
 } from "@heroicons/react/16/solid";
-
 import icon from "./icon.svg";
+
+export const viewport: Viewport = {
+	themeColor: [
+		{ media: "(prefers-color-scheme: dark)", color: "#06B6D4" },
+		{ media: "(prefers-color-scheme: light)", color: "#0490A5" },
+	],
+	colorScheme: "dark light",
+};
+
 
 export const metadata: Metadata = {
 	title: "Rift Insight",
