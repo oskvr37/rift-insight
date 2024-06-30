@@ -8,6 +8,8 @@ import {
 	MagnifyingGlassIcon,
 } from "@heroicons/react/16/solid";
 
+import icon from "./icon.svg";
+
 export const metadata: Metadata = {
 	title: "Rift Insight",
 	description: "Check League of Legends player stats and insights!",
@@ -32,8 +34,11 @@ export default function RootLayout({
 			<body className={font.className}>
 				<header className="z-50">
 					<div className="flex items-center justify-between">
-						<Link href="/">
-							Rift <span className="text-cyan-500">Insight</span>
+						<Link href="/" className="flex gap-1">
+							<img src={icon.src} alt="Rift Insight" className="size-6" />
+							<div className="dark:text-slate-300">
+								Rift <span className="text-cyan-500">Insight</span>
+							</div>
 						</Link>
 						{/* <SearchBar /> */}
 						<section className="flex gap-2">

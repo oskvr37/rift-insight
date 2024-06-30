@@ -14,7 +14,7 @@ footer {
 }
 
 header {
-	@apply dark:bg-slate-900/75;
+	@apply dark:bg-slate-900/75 bg-slate-200/75;
 	@apply sticky top-0 z-10;
 	@apply backdrop-blur;
 	@apply shadow;
