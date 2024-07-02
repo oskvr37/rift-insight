@@ -1,12 +1,6 @@
-import dynamic from "next/dynamic";
-
-const SearchBar = dynamic(() => import("@/components/SearchBar"), {
-	ssr: false,
-});
-
-const SearchHistory = dynamic(() => import("@/components/SearchHistory"), {
-	ssr: false,
-});
+import SearchBar from "@/components/SearchBar";
+import SearchHistory from "@/components/SearchHistory";
+import FavoriteList from "@/components/favorite/List";
 
 export default async function Page() {
 	return (
@@ -23,9 +17,8 @@ export default async function Page() {
 			<section className="md:w-1/2">
 				<SearchBar />
 			</section>
-			<section>
-				<SearchHistory />
-			</section>
+			<SearchHistory />
+			<FavoriteList />
 		</main>
 	);
 }

@@ -4,53 +4,39 @@
 // so we can store formatted data in the store.
 // but lets wait for `useActionState` to be released
 
-import { SERVERS, SERVERS_NORMALIZED } from "@/types";
+import { SERVERS_NORMALIZED } from "@/types";
 import { accountByRiotId, summonerByPuuid } from "@/utils/api";
-import { closestRegion } from "@/utils/helpers";
-import { redirect } from "next/navigation";
-import { encodeSummoner } from "@/utils/helpers";
+import { closestRegion, encodeSummoner } from "@/utils/helpers";
+import { parseSummoner } from "@/utils/helpers";
 
 export async function searchUser(
-	gameName: string,
-	tagLine: string,
-	server: SERVERS,
+	name: string,
 	normalized_server: SERVERS_NORMALIZED
 ) {
-	if (
-		typeof gameName !== "string" ||
-		typeof tagLine !== "string" ||
-		typeof server !== "string"
-	) {
-		return;
-	}
+	const { gameName, tagLine, riotServer } = parseSummoner(
+		name.replace("#", "-"),
+		normalized_server
+	);
 
-	if (!SERVERS.includes(server)) {
-		return;
-	}
-
-	const riotIdRegex = /^[a-zA-Z0-9 ]{3,16}$/;
-	const tagLineRegex = /^[a-zA-Z0-9]{3,5}$/;
-
-	if (!riotIdRegex.test(gameName) || !tagLineRegex.test(tagLine)) {
-		return;
-	}
-
-	const region = closestRegion(server);
+	const region = closestRegion(riotServer);
 	const account = await accountByRiotId(gameName, tagLine, region);
 
-	// ✨ build an error page
-	if (!account) redirect(`/summoner`);
+	if (!account) return null;
 
-	const summoner = await summonerByPuuid(account.puuid, server);
+	const summoner = await summonerByPuuid(account.puuid, riotServer);
 
-	if (!summoner) {
-		// ✨ build an error page
-		redirect(`/summoner/${normalized_server}`);
-	}
+	if (!summoner) return null;
 
-	const encodedSummoner = encodeSummoner(account.gameName);
+	// use `encodeURIComponent` to fix the issue with special characters
+	// in redirect header
+	// const encodedSummoner = encodeURIComponent(account.gameName);
 
-	redirect(
-		`/summoner/${normalized_server}/${encodedSummoner}-${account.tagLine}`
-	);
+	return {
+		server: riotServer,
+		normalized_server,
+		summonerName: account.gameName,
+		tagLine: account.tagLine,
+		url: `${encodeSummoner(account.gameName)}-${account.tagLine.toLowerCase()}`,
+		profileIconId: summoner.profileIconId,
+	};
 }

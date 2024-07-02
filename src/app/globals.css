@@ -20,14 +20,14 @@ header {
 	@apply shadow;
 }
 
+a {
+	@apply hover:underline decoration-cyan-500 underline-offset-2;
+}
+
 input,
 select {
 	@apply bg-transparent;
 	@apply dark:text-slate-300;
-}
-
-button {
-	@apply dark:bg-slate-800 dark:text-slate-300;
 }
 
 progress {

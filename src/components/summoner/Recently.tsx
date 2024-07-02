@@ -1,13 +1,17 @@
-import { REGIONS } from "@/types";
+import { REGIONS, SERVERS_NORMALIZED } from "@/types";
 import { gatherMatches } from "./Matches";
+import Link from "next/link";
+import { encodeSummoner } from "@/utils/helpers";
 
 export default async function Recently({
 	puuid,
 	region,
+	server,
 	page,
 }: {
 	puuid: string;
 	region: REGIONS;
+	server: SERVERS_NORMALIZED;
 	page: number;
 }) {
 	const matches = await gatherMatches(puuid, region, page);
@@ -20,6 +24,7 @@ export default async function Recently({
 				riotIdTagline: string;
 				puuid: string;
 			};
+			url: string;
 			matches: boolean[];
 		}
 	> = {};
@@ -34,6 +39,7 @@ export default async function Recently({
 				playedWith[p.info.puuid] = {
 					...p,
 					matches: [p.team.win],
+					url: encodeSummoner(p.info.riotIdGameName),
 				};
 			}
 		})
@@ -44,7 +50,7 @@ export default async function Recently({
 	if (!data.length) return null;
 
 	return (
-		<section className="space-y-2">
+		<section className="fadein space-y-2">
 			<h2>Recently played with</h2>
 			<div className="space-y-1">
 				{data.map((p) => (
@@ -52,12 +58,15 @@ export default async function Recently({
 						key={p.info.riotIdGameName}
 						className="flex gap-2 items-center dark:bg-slate-800 bg-slate-100 px-2 py-1 rounded dark:text-slate-300 shadow"
 					>
-						<p className="mr-auto">
+						<Link
+							className="mr-auto"
+							href={`/summoner/${server}/${p.url}-${p.info.riotIdTagline}`}
+						>
 							{p.info.riotIdGameName}{" "}
 							<span className="text-sm dark:text-slate-400 font-light">
 								#{p.info.riotIdTagline}
 							</span>
-						</p>
+						</Link>
 						<div className="flex gap-2">
 							{p.matches.map((m: boolean, index) => (
 								<div
