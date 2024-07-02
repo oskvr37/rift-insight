@@ -12,6 +12,7 @@ import SummonerLeague from "@/components/summoner/League";
 import SummonerMastery from "@/components/summoner/Mastery";
 import SummonerProfile from "@/components/summoner/Profile";
 import Recently from "@/components/summoner/Recently";
+import FavoriteButton from "@/components/favorite/Button";
 
 type Props = {
 	params: { server: SERVERS_NORMALIZED; summoner: string };
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-	const { riotServer, riotAccount, region } = await getSummoner({
+	const { riotServer, riotAccount, region, url } = await getSummoner({
 		summoner: params.summoner,
 		server: params.server,
 	});
@@ -41,14 +42,26 @@ export default async function Page({ params }: Props) {
 	}
 
 	return (
-		<main className="space-y-4">
-			<div className="flex justify-between">
+		<main className="space-y-4	">
+			<div className="flex gap-2">
 				<SummonerProfile
 					gameName={riotAccount.gameName}
 					tagLine={riotAccount.tagLine}
 					summonerLevel={summonerData.summonerLevel}
 					profileIconId={summonerData.profileIconId}
 				/>
+				<FavoriteButton
+					record={{
+						normalized_server: params.server,
+						profileIconId: summonerData.profileIconId,
+						server: riotServer,
+						summonerName: riotAccount.gameName,
+						tagLine: riotAccount.tagLine,
+						url,
+					}}
+					className="p-1 size-8"
+				/>
+
 				{/* <section>
 					<h2>Performance overview</h2>
 				</section>
@@ -89,12 +102,12 @@ const getSummoner = cache(
 			notFound();
 		}
 
-		const { gameName, tagLine, riotServer } = parsed_summoner;
+		const { gameName, tagLine, riotServer, url } = parsed_summoner;
 		const region = closestRegion(riotServer);
 		const riotAccount = await accountByRiotId(gameName, tagLine, region);
 
 		if (!riotAccount) notFound();
 
-		return { riotServer, riotAccount, region };
+		return { riotServer, riotAccount, region, url };
 	}
 );

@@ -15,7 +15,6 @@ export default function SearchBar() {
 		SERVERS["2"]
 	);
 	const [pending, setPending] = useState(false);
-	const [server, setServer] = useState<SERVERS>(storageServer);
 	const [serverNormalized, setServerNormalized] = useState<SERVERS_NORMALIZED>(
 		SERVERS_NORMALIZED[storageServer]
 	);
@@ -26,33 +25,34 @@ export default function SearchBar() {
 		setPending(true);
 		event.preventDefault();
 
-		searchUser(inputValue, serverNormalized).then((response) => {
-			if (!response) {
-				setError("User not found");
-				return;
-			}
-			storeRecentSearch(response);
-			setInputValue("");
-			redirect(`/summoner/${response.normalized_server}/${response.url}`);
-		}).finally(() => setPending(false));
+		searchUser(inputValue, serverNormalized)
+			.then((response) => {
+				if (!response) {
+					setError("User not found");
+					return;
+				}
+				storeRecentSearch(response);
+				setInputValue("");
+				redirect(`/summoner/${response.normalized_server}/${response.url}`);
+			})
+			.finally(() => setPending(false));
 	}
 
 	useEffect(() => {
-		setServerNormalized(SERVERS_NORMALIZED[server]);
-		setStorageServer(server);
-	}, [server, setStorageServer]);
+		setServerNormalized(SERVERS_NORMALIZED[storageServer]);
+	}, [storageServer]);
 
 	return (
-		<section className="space-y-1">
+		<section className="fadein space-y-1">
 			{error && <p className="text-red-400 text-sm">{error}</p>}
 			<form onSubmit={handleSubmit} className="flex gap-2 fadein">
 				<div className="flex rounded dark:bg-slate-800 border-slate-300 dark:border-transparent border w-full">
 					<select
 						className="dark:bg-slate-700 bg-slate-200/25 rounded-l px-2"
-						value={server}
+						value={storageServer}
 						required
 						onChange={(event) => {
-							setServer(event.target.value as SERVERS);
+							setStorageServer(event.target.value as SERVERS);
 						}}
 					>
 						{Object.entries(SERVERS_NORMALIZED).map(([key, value]) => (

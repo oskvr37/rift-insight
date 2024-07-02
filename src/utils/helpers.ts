@@ -133,5 +133,5 @@ export function parseSummoner(
 
 	// console.log("[Summoner]", { gameName, split, tagLine, riotServer });
 
-	return { gameName, tagLine, riotServer };
+	return { gameName, tagLine, riotServer, url: `${gameName}-${tagLine}` };
 }

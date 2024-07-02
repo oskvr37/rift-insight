@@ -1,5 +1,4 @@
 import { profileIcon } from "@/utils/dragon";
-import FavoriteButton from "@/components/FavoriteButton";
 
 export default async function SummonerProfile({
 	gameName,
@@ -27,7 +26,6 @@ export default async function SummonerProfile({
 				</h1>
 				<p className="dark:text-slate-300">{summonerLevel} lvl</p>
 			</div>
-			<FavoriteButton />
 		</section>
 	);
 }
