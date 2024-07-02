@@ -2,15 +2,34 @@
 
 import useSearchHistory from "@/hooks/search";
 import Link from "next/link";
-import FavoriteButton from "./favorite/Button";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { StarIcon as StarIconSolid } from "@heroicons/react/24/solid";
+import { StarIcon as StarIconOutline } from "@heroicons/react/24/outline";
+import { SearchRecord } from "@/types";
+import useFavorites from "@/hooks/favorites";
 
 export default function SearchHistory() {
 	const { searchHistory, clearSearchHistory, deleteSearchRecord } =
 		useSearchHistory();
+	const { addFavorite, isFavorite, removeFavorite } = useFavorites();
 
 	const entries = Array.from(searchHistory.values() || []);
-
+	function FavoriteButton({ record }: { record: SearchRecord }) {
+		return (
+			<button
+				className={`rounded dark:bg-slate-800 text-cyan-400 shadow p-1 size-6`}
+				onClick={() => {
+					if (isFavorite(record)) {
+						removeFavorite(record);
+					} else {
+						addFavorite(record);
+					}
+				}}
+			>
+				{isFavorite(record) ? <StarIconSolid /> : <StarIconOutline />}
+			</button>
+		);
+	}
 	return (
 		<section className="fadein space-y-2">
 			<h2>Search History</h2>
@@ -22,7 +41,7 @@ export default function SearchHistory() {
 			<ol className="fadein space-y-2">
 				{entries.map(([key, record]) => (
 					<li key={key} className="flex items-center gap-2">
-						<FavoriteButton record={record} className="p-1 size-6" />
+						<FavoriteButton record={record} />
 						<button
 							onClick={() => deleteSearchRecord(key)}
 							className="dark:bg-slate-800 text-red-400 rounded p-1 shadow"
