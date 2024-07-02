@@ -192,7 +192,7 @@ function Match({ match }: { match: GatheredMatch }) {
 	return (
 		<article
 			key={match.match_id}
-			className={`rounded dark:bg-slate-800 bg-slate-100 shadow`}
+			className={`rounded dark:bg-slate-800 bg-slate-100 shadow fadein`}
 		>
 			<Header />
 			<section className="space-y-2 p-2">

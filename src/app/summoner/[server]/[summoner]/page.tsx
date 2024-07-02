@@ -71,15 +71,20 @@ export default async function Page({ params }: Props) {
 				<div className="space-y-4 col-span-3 w-full">
 					<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
 					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
-					<Suspense fallback={<div>Loading...</div>}>
-						<Recently puuid={summonerData.puuid} region={region} page={1} />
+					<Suspense>
+						<Recently
+							puuid={summonerData.puuid}
+							region={region}
+							page={1}
+							server={params.server}
+						/>
 					</Suspense>
 					{/* <section>
 						<h2>Points graph</h2>
 					</section> */}
 				</div>
 				<div className="col-span-5">
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<h1 className="animate-pulse">Matches</h1>}>
 						<Matches puuid={summonerData.puuid} region={region} />
 					</Suspense>
 				</div>
