@@ -22,12 +22,13 @@ const Modal = ({
 }) => {
 	return (
 		<Portal>
-			<aside className="container">
-				{children}
-				<button className="bg-slate-700" onClick={onClose}>
-					Close
-				</button>
-			</aside>
+			{children}
+			<button
+				className="bg-slate-700 px-2 py-1 text-sm rounded"
+				onClick={onClose}
+			>
+				Close
+			</button>
 		</Portal>
 	);
 };
