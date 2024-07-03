@@ -31,7 +31,7 @@ export default function SearchHistory() {
 		);
 	}
 	return (
-		<section className="fadein space-y-2">
+		<section className="space-y-2">
 			<h2>Search History</h2>
 			{entries.length === 0 && (
 				<p className="dark:text-slate-400 text-slate-600 fadein">

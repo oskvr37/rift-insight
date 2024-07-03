@@ -27,7 +27,7 @@ export default function FavoriteList() {
 	}
 
 	return (
-		<section className="fadein space-y-2">
+		<section className="space-y-2">
 			<h2>Favorites</h2>
 			{!Object.keys(favorites).length && (
 				<p className="dark:text-slate-400 text-slate-600 fadein">
