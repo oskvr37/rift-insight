@@ -43,7 +43,7 @@ export default function SearchBar() {
 	}, [storageServer]);
 
 	return (
-		<section className="fadein space-y-1">
+		<section className="space-y-1">
 			{error && <p className="text-red-400 text-sm">{error}</p>}
 			<form onSubmit={handleSubmit} className="flex gap-2 fadein">
 				<div className="flex rounded dark:bg-slate-800 border-slate-300 dark:border-transparent border w-full">

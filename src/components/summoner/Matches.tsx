@@ -30,9 +30,12 @@ export const gatherMatches = cache(
 		// but we are rate limited by not having a production API key
 
 		for (const matchId of matchIds) {
-			await fetch(`${baseUrl}/api/summoner/${region}/${puuid}/match/${matchId}`, {
-				cache: "force-cache",
-			})
+			await fetch(
+				`${baseUrl}/api/summoner/${region}/${puuid}/match/${matchId}`,
+				{
+					cache: "force-cache",
+				}
+			)
 				.then((res) => res.json())
 				.then((match: FormattedMatch) => {
 					const player = match.players.find((p) => p.info.puuid === puuid)!;
@@ -73,7 +76,9 @@ export default async function SummonerMatches({
 				{/* <div>Winrate, KDA, etc.</div> */}
 			</div>
 			<div className="space-y-4">
-				{matches.length === 0 && <p className="dark:text-slate-400">Nothing found!</p>}
+				{matches.length === 0 && (
+					<p className="dark:text-slate-400">Nothing found!</p>
+				)}
 				{matches.map((match) => (
 					<Match key={match.match_id} match={match} />
 				))}
@@ -94,15 +99,15 @@ function Match({ match }: { match: GatheredMatch }) {
 		0
 	);
 
-	const playerKillParticipation = Math.round(
-		((match.player.stats.kills + match.player.stats.assists) /
-			playerTeamKills) *
-			100
-	);
+	const KD_sum = match.player.stats.kills + match.player.stats.assists;
+
+	const playerKillParticipation =
+		Math.round((KD_sum / playerTeamKills) * 100) || 0;
 
 	const playerKDA =
-		(match.player.stats.kills + match.player.stats.assists) /
-		match.player.stats.deaths;
+		match.player.stats.deaths === 0
+			? KD_sum
+			: KD_sum / match.player.stats.deaths;
 
 	function Summary() {
 		return (

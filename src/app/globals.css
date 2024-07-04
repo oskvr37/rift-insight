@@ -7,10 +7,13 @@ body {
 	@apply dark:bg-slate-900 dark:text-slate-50;
 }
 
-main,
-header > div,
-footer {
+.container {
 	@apply p-2 max-w-screen-xl mx-auto;
+}
+
+main,
+footer {
+	@apply container;
 }
 
 header {
