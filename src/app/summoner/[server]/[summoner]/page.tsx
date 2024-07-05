@@ -12,6 +12,7 @@ import SummonerLeague from "@/components/summoner/League";
 import SummonerMastery from "@/components/summoner/Mastery";
 import SummonerProfile from "@/components/summoner/Profile";
 import Recently from "@/components/summoner/Recently";
+import Summary from "@/components/summoner/Summary";
 import FavoriteButton from "@/components/favorite/Button";
 
 type Props = {
@@ -78,6 +79,9 @@ export default async function Page({ params }: Props) {
 							page={1}
 							server={params.server}
 						/>
+					</Suspense>
+					<Suspense>
+						<Summary puuid={summonerData.puuid} region={region} page={1} />
 					</Suspense>
 					{/* <section>
 						<h2>Points graph</h2>
