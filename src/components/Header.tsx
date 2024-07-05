@@ -65,7 +65,7 @@ export default function Header() {
 				</section>
 			</div>
 			{currentModal && (
-				<aside className="container border-b-2 border-slate-800">
+				<aside className="container dark:border-b-2 border-slate-800">
 					{currentModal && renderModal()}
 				</aside>
 			)}
