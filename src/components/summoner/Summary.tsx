@@ -21,7 +21,7 @@ export default async function Summary({
 		assists: number;
 		team_kills: number;
 		champions: string[];
-		positions: string[];
+		positions: PositionsUnion[];
 		total_damage: number;
 		team_damage: number;
 	} = {
@@ -52,7 +52,7 @@ export default async function Summary({
 			.map((p) => p.stats.kills)
 			.reduce((a, b) => a + b, 0);
 		stats.champions.push(player.champion.name);
-		stats.positions.push(player.champion.role);
+		stats.positions.push(player.champion.role as PositionsUnion);
 		stats.total_damage +=
 			player.damage.magic + player.damage.physical + player.damage.true;
 		stats.team_damage += m.player_team.reduce(
@@ -64,6 +64,8 @@ export default async function Summary({
 	const damage_participation = Math.round(
 		(stats.total_damage / stats.team_damage) * 100
 	);
+
+	// 💡 add played positions
 
 	return (
 		<section className="fadein space-y-2">
@@ -104,7 +106,79 @@ export default async function Summary({
 					</p>
 				</div>
 			</div>
+			<div className="grid lg:grid-cols-1 md:grid-cols-2 gap-2">
+				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow py-1 px-2 rounded">
+					<p className="dark:text-slate-400">Games last week</p>
+					<Heatmap timestamps={stats.dates} />
+				</div>
+				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow py-1 px-2 rounded">
+					<p className="dark:text-slate-400">Top positions</p>
+					<TopPositions positions={stats.positions} />
+				</div>
+			</div>
 			{/* <pre>{JSON.stringify(stats, null, 2)}</pre> */}
 		</section>
+	);
+}
+
+type PositionsUnion = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
+
+function TopPositions({ positions }: { positions: PositionsUnion[] }) {
+	const data = positions.reduce((acc, pos) => {
+		acc[pos] = (acc[pos] || 0) + 1;
+		return acc;
+	}, {} as Record<PositionsUnion, number>);
+
+	return (
+		<div className="flex gap-2">
+			{Object.entries(data).map(([pos, count]) => (
+				<div
+					key={pos}
+					className="text-sm dark:text-slate-400 flex items-center gap-1"
+				>
+					<img
+						src={`/positions/${pos.toLowerCase()}.png`}
+						alt={pos}
+						className="size-8"
+					/>
+					<p>{Math.round((count / positions.length) * 100)}%</p>
+				</div>
+			))}
+		</div>
+	);
+}
+
+function Heatmap({ timestamps }: { timestamps: number[] }) {
+	// heatmap for one week, more matches at day -> lighter color
+	const today = new Date();
+	const weekLength = 7;
+
+	const weekDateArray = Array.from({ length: weekLength }, (_, i) => {
+		const date = new Date(today);
+		date.setDate(today.getDate() - i);
+		return date;
+	});
+
+	const timestampDates = timestamps.map((t) => new Date(t));
+
+	const data = weekDateArray.map((weekDate) => {
+		return timestampDates.filter(
+			(date) => date.getDate() === weekDate.getDate()
+		).length;
+	});
+
+	function getHeatmapColor(value: number) {
+		if (value === 0) return "dark:bg-slate-700 bg-slate-300";
+		if (value < 3) return "bg-cyan-500/40";
+		if (value < 6) return "bg-cyan-500/60";
+		return "bg-cyan-500";
+	}
+
+	return (
+		<div className="flex gap-2">
+			{data.map((heat) => (
+				<div key={heat} className={`size-4 rounded ${getHeatmapColor(heat)}`} />
+			))}
+		</div>
 	);
 }
