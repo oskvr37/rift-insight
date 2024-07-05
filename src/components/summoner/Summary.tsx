@@ -65,6 +65,9 @@ export default async function Summary({
 		(stats.total_damage / stats.team_damage) * 100
 	);
 
+	// 💡 add played positions
+	// 💡 add played champions
+
 	return (
 		<section className="fadein space-y-2">
 			<h2>Summary</h2>
@@ -104,7 +107,46 @@ export default async function Summary({
 					</p>
 				</div>
 			</div>
+			<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow py-1 px-2 rounded">
+				<p className="dark:text-slate-400">Last week played</p>
+				<Heatmap timestamps={stats.dates} />
+			</div>
 			{/* <pre>{JSON.stringify(stats, null, 2)}</pre> */}
 		</section>
+	);
+}
+
+function Heatmap({ timestamps }: { timestamps: number[] }) {
+	// heatmap for one week, more matches at day -> lighter color
+	const today = new Date();
+	const weekLength = 7;
+
+	const weekDateArray = Array.from({ length: weekLength }, (_, i) => {
+		const date = new Date(today);
+		date.setDate(today.getDate() - i);
+		return date;
+	});
+
+	const timestampDates = timestamps.map((t) => new Date(t));
+
+	const data = weekDateArray.map((weekDate) => {
+		return timestampDates.filter(
+			(date) => date.getDate() === weekDate.getDate()
+		).length;
+	});
+
+	function getHeatmapColor(value: number) {
+		if (value === 0) return "dark:bg-slate-700 bg-slate-300";
+		if (value < 3) return "bg-cyan-500/40";
+		if (value < 6) return "bg-cyan-500/60";
+		return "bg-cyan-500";
+	}
+
+	return (
+		<div className="flex gap-2">
+			{data.map((heat) => (
+				<div key={heat} className={`size-4 rounded ${getHeatmapColor(heat)}`} />
+			))}
+		</div>
 	);
 }
