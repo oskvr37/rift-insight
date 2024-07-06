@@ -3,6 +3,7 @@ import { FormattedMatch } from "@/utils/helpers";
 import { matchesByPuuid } from "@/utils/api";
 import { cache } from "react";
 import { championIcon, itemIcon, spellIcon } from "@/utils/dragon";
+import { getTierColor } from "@/utils/helpers";
 
 type GatheredMatch = FormattedMatch & {
 	player: FormattedMatch["players"][0];
@@ -161,8 +162,8 @@ function Match({ match }: { match: GatheredMatch }) {
 			<section
 				className={`flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between p-2 rounded-t shadow ${
 					match.player.team.win
-						? "dark:bg-cyan-900 bg-cyan-500"
-						: "dark:bg-slate-700 bg-slate-300"
+						? "dark:bg-cyan-900 bg-cyan-500/30"
+						: "dark:bg-red-800/50 bg-red-500/30"
 				}`}
 			>
 				<div className="flex gap-2">
@@ -208,7 +209,25 @@ function Match({ match }: { match: GatheredMatch }) {
 							alt={match.player.champion.name}
 							className="size-12"
 						/>
-						<div className="flex gap-4">
+						<div className="flex gap-4 dark:text-slate-400">
+							<div>
+								<p>
+									<span
+										className={`${getTierColor(
+											playerKillParticipation / 100
+										)}`}
+									>
+										{playerKillParticipation}%
+									</span>{" "}
+									KP
+								</p>
+								<p>
+									<span className={`${getTierColor(playerKDA / 5)}`}>
+										{playerKDA.toFixed(2)}
+									</span>{" "}
+									KDA
+								</p>
+							</div>
 							<div>
 								<p>
 									{match.player.champion.name} {match.player.champion.level} lvl
@@ -218,22 +237,18 @@ function Match({ match }: { match: GatheredMatch }) {
 									{match.player.stats.assists}
 								</p>
 							</div>
-							<div>
-								<p>{playerKillParticipation}% KP</p>
-								<p>{playerKDA.toFixed(2)} KDA</p>
-							</div>
 						</div>
 					</div>
 					<div className="flex gap-1">
 						<img
 							src={spellIcon(match.player.summoners.spell1)}
 							alt=""
-							className="size-6"
+							className="size-6 rounded"
 						/>
 						<img
 							src={spellIcon(match.player.summoners.spell2)}
 							alt=""
-							className="size-6"
+							className="size-6 rounded"
 						/>
 						<Items />
 					</div>

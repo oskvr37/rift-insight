@@ -1,5 +1,6 @@
 import { SERVERS } from "@/types";
 import { leagueBySummoner } from "@/utils/api";
+import { getTierColor } from "@/utils/helpers";
 
 export default async function SummonerLeague({
 	summoner_id,
@@ -45,7 +46,9 @@ function League({ league }: { league: any }) {
 					</h3>
 					<div className="dark:text-slate-400">
 						{league.wins} / {league.losses}{" "}
-						<span className="text-cyan-500 font-medium">{winrate}%</span>
+						<span className={`font-bold ${getTierColor(winrate / 100)}`}>
+							{winrate}%
+						</span>
 					</div>
 				</div>
 				<img
