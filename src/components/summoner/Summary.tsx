@@ -1,5 +1,6 @@
 import { REGIONS } from "@/types";
 import { gatherMatches } from "./Matches";
+import { getTierColor } from "@/utils/helpers";
 
 export default async function Summary({
 	puuid,
@@ -61,11 +62,15 @@ export default async function Summary({
 		);
 	});
 
+	const KDA =
+		Math.round(((stats.kills + stats.assists) / stats.deaths) * 100) / 100;
+	const winrate = (stats.wins / (stats.wins + stats.losses)) * 100;
+	const KP = Math.round(
+		((stats.kills + stats.assists) / stats.team_kills) * 100
+	);
 	const damage_participation = Math.round(
 		(stats.total_damage / stats.team_damage) * 100
 	);
-
-	// 💡 add played positions
 
 	return (
 		<section className="fadein space-y-2">
@@ -73,18 +78,15 @@ export default async function Summary({
 			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-2 dark:text-slate-400">
 				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
 					<h3>KDA</h3>
-					<p className="text-2xl text-yellow-500 font-bold">
-						{Math.round(((stats.kills + stats.assists) / stats.deaths) * 100) /
-							100}
-					</p>
+					<p className={`text-2xl font-bold ${getTierColor(KDA / 5)}`}>{KDA}</p>
 					{/* <p>
 						{stats.kills / 10} / {stats.deaths / 10} / {stats.assists / 10}
 					</p> */}
 				</div>
 				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
 					<h3>Winrate</h3>
-					<p className="text-2xl text-emerald-500 font-bold">
-						{(stats.wins / (stats.wins + stats.losses)) * 100}%
+					<p className={`text-2xl font-bold ${getTierColor(winrate / 75)}`}>
+						{winrate}%
 					</p>
 					{/* <p>
 						{stats.wins}W {stats.losses}L
@@ -92,16 +94,15 @@ export default async function Summary({
 				</div>
 				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
 					<h3>Kill Participation</h3>
-					<p className="text-2xl text-orange-500 font-bold">
-						{Math.round(
-							((stats.kills + stats.assists) / stats.team_kills) * 100
-						)}
-						%
-					</p>
+					<p className={`text-2xl font-bold ${getTierColor(KP / 80)}`}>{KP}%</p>
 				</div>
 				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
 					<h3>Damage Share</h3>
-					<p className="text-2xl text-red-500 font-bold">
+					<p
+						className={`text-2xl font-bold ${getTierColor(
+							damage_participation / 30
+						)}`}
+					>
 						{damage_participation}%
 					</p>
 				</div>
@@ -120,6 +121,8 @@ export default async function Summary({
 		</section>
 	);
 }
+
+
 
 type PositionsUnion = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 

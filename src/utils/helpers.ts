@@ -48,6 +48,14 @@ export function encodeSummoner(summoner: string): string {
 	);
 }
 
+export function getTierColor(tier: number) {
+	if (tier > 1) return "text-tier-100";
+	if (tier > 0.75) return "text-tier-200";
+	if (tier > 0.5) return "text-tier-300";
+	if (tier > 0.2) return "text-tier-400";
+	return "text-tier-500";
+}
+
 export function formatMatch(match: GameData) {
 	return {
 		created_at: match.info.gameCreation,
