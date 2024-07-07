@@ -30,3 +30,17 @@ export function spellIcon(id: number) {
 
 	return `${baseUrl}/img/spell/${spell!.image.full}`;
 }
+
+export function championSplash(id: number) {
+	// const champion = Object.values(champions).find(
+	// 	(champion) => champion.key === String(id)
+	// );
+	const champion =
+		Object.values(champions)[
+			Math.floor(Math.random() * Object.values(champions).length)
+		];
+
+	return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${
+		champion!.id
+	}_0.jpg`;
+}
