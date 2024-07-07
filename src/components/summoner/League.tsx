@@ -36,7 +36,7 @@ function League({ league }: { league: any }) {
 	return (
 		<div className="space-y-2">
 			<h2>{normalizeQueueType(league.queueType)}</h2>
-			<div className="flex gap-4 dark:bg-slate-800 bg-slate-100 px-4 rounded items-center relative overflow-hidden justify-between shadow">
+			<div className="flex gap-4  px-4 rounded items-center relative overflow-hidden justify-between shadow backdrop-blur">
 				<div className="z-10 font-light">
 					<h3 className="text-xl capitalize">
 						{tier} {show_rank && league.rank}{" "}

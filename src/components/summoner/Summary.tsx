@@ -76,14 +76,14 @@ export default async function Summary({
 		<section className="fadein space-y-2">
 			<h2>Summary</h2>
 			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-2 dark:text-slate-400">
-				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
+				<div className="w-full rounded dark:bg-slate-800/50 bg-slate-100 shadow p-2">
 					<h3>KDA</h3>
 					<p className={`text-2xl font-bold ${getTierColor(KDA / 5)}`}>{KDA}</p>
 					{/* <p>
 						{stats.kills / 10} / {stats.deaths / 10} / {stats.assists / 10}
 					</p> */}
 				</div>
-				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
+				<div className="w-full rounded dark:bg-slate-800/50 bg-slate-100 shadow p-2">
 					<h3>Winrate</h3>
 					<p className={`text-2xl font-bold ${getTierColor(winrate / 75)}`}>
 						{winrate}%
@@ -92,11 +92,11 @@ export default async function Summary({
 						{stats.wins}W {stats.losses}L
 					</p> */}
 				</div>
-				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
+				<div className="w-full rounded dark:bg-slate-800/50 bg-slate-100 shadow p-2">
 					<h3>Kill Participation</h3>
 					<p className={`text-2xl font-bold ${getTierColor(KP / 80)}`}>{KP}%</p>
 				</div>
-				<div className="w-full rounded dark:bg-slate-800 bg-slate-100 shadow p-2">
+				<div className="w-full rounded dark:bg-slate-800/50 bg-slate-100 shadow p-2">
 					<h3>Damage Share</h3>
 					<p
 						className={`text-2xl font-bold ${getTierColor(
@@ -108,11 +108,11 @@ export default async function Summary({
 				</div>
 			</div>
 			<div className="grid lg:grid-cols-1 md:grid-cols-2 gap-2">
-				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow py-1 px-2 rounded">
+				<div className="flex justify-between items-center dark:bg-slate-800/50 bg-slate-100 shadow py-1 px-2 rounded">
 					<p className="dark:text-slate-400">Games last week</p>
 					<Heatmap timestamps={stats.dates} />
 				</div>
-				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow p-2 rounded">
+				<div className="flex justify-between items-center dark:bg-slate-800/50 bg-slate-100 shadow p-2 rounded">
 					<p className="dark:text-slate-400">Top positions</p>
 					<TopPositions positions={stats.positions} />
 				</div>

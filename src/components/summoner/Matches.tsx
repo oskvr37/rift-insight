@@ -162,8 +162,8 @@ function Match({ match }: { match: GatheredMatch }) {
 			<section
 				className={`flex gap-2 text-xs dark:font-light dark:text-slate-300 justify-between p-2 rounded-t shadow ${
 					match.player.team.win
-						? "dark:bg-cyan-900 bg-cyan-500/30"
-						: "dark:bg-red-800/50 bg-red-500/30"
+						? "dark:bg-cyan-900/50 bg-cyan-500/30"
+						: "dark:bg-red-500/25 bg-red-500/30"
 				}`}
 			>
 				<div className="flex gap-2">
@@ -198,7 +198,7 @@ function Match({ match }: { match: GatheredMatch }) {
 	return (
 		<article
 			key={match.match_id}
-			className={`rounded dark:bg-slate-800 bg-slate-100 shadow fadein`}
+			className={`rounded dark:bg-slate-800/50 bg-slate-100/80 shadow fadein backdrop-blur`}
 		>
 			<Header />
 			<section className="space-y-2 p-2">
@@ -213,9 +213,7 @@ function Match({ match }: { match: GatheredMatch }) {
 							<div>
 								<p>
 									<span
-										className={`${getTierColor(
-											playerKillParticipation / 100
-										)}`}
+										className={`${getTierColor(playerKillParticipation / 100)}`}
 									>
 										{playerKillParticipation}%
 									</span>{" "}

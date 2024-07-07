@@ -54,14 +54,14 @@ export default async function Recently({
 		return (
 			<div
 				key={p.info.riotIdGameName}
-				className="flex gap-2 items-center dark:bg-slate-800 bg-slate-100 px-2 py-1 rounded dark:text-slate-300 shadow"
+				className="flex gap-2 items-center dark:bg-slate-800/50 bg-slate-100 px-2 py-1 rounded dark:text-slate-400 shadow"
 			>
 				<Link
-					className="mr-auto"
+					className="mr-auto truncate"
 					href={`/summoner/${server}/${p.url}-${p.info.riotIdTagline}`}
 				>
 					{p.info.riotIdGameName}{" "}
-					<span className="text-sm dark:text-slate-400 font-light">
+					<span className="text-sm dark:text-slate-500">
 						#{p.info.riotIdTagline}
 					</span>
 				</Link>
