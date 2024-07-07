@@ -112,7 +112,7 @@ export default async function Summary({
 					<p className="dark:text-slate-400">Games last week</p>
 					<Heatmap timestamps={stats.dates} />
 				</div>
-				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow py-1 px-2 rounded">
+				<div className="flex justify-between items-center dark:bg-slate-800 bg-slate-100 shadow p-2 rounded">
 					<p className="dark:text-slate-400">Top positions</p>
 					<TopPositions positions={stats.positions} />
 				</div>
@@ -122,29 +122,39 @@ export default async function Summary({
 	);
 }
 
-
-
 type PositionsUnion = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 function TopPositions({ positions }: { positions: PositionsUnion[] }) {
-	const data = positions.reduce((acc, pos) => {
-		acc[pos] = (acc[pos] || 0) + 1;
-		return acc;
-	}, {} as Record<PositionsUnion, number>);
+	const data = {
+		TOP: 0,
+		JUNGLE: 0,
+		MIDDLE: 0,
+		BOTTOM: 0,
+		UTILITY: 0,
+	};
+
+	positions.forEach((pos) => {
+		data[pos] += 1;
+	});
 
 	return (
 		<div className="flex gap-2">
 			{Object.entries(data).map(([pos, count]) => (
 				<div
+					className="size-8 relative overflow-hidden rounded flex items-center justify-center"
 					key={pos}
-					className="text-sm dark:text-slate-400 flex items-center gap-1"
 				>
+					<div
+						className="dark:bg-cyan-600 bg-cyan-500 absolute bottom-0 left-0 right-0"
+						style={{
+							height: `${(count / positions.length) * 100}%`,
+						}}
+					/>
 					<img
 						src={`/positions/${pos.toLowerCase()}.png`}
 						alt={pos}
-						className="size-8"
+						className="size-8 z-10 saturate-0 mix-blend-luminosity dark:mix-blend-normal"
 					/>
-					<p>{Math.round((count / positions.length) * 100)}%</p>
 				</div>
 			))}
 		</div>
