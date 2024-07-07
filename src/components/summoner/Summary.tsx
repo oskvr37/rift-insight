@@ -125,16 +125,21 @@ export default async function Summary({
 type PositionsUnion = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "UTILITY";
 
 function TopPositions({ positions }: { positions: PositionsUnion[] }) {
-	const data = positions.reduce((acc, pos) => {
-		acc[pos] = (acc[pos] || 0) + 1;
-		return acc;
-	}, {} as Record<PositionsUnion, number>);
+	const data = {
+		TOP: 0,
+		JUNGLE: 0,
+		MIDDLE: 0,
+		BOTTOM: 0,
+		UTILITY: 0,
+	};
 
-	const sortedPositions = Object.entries(data).sort((a, b) => b[1] - a[1]);
+	positions.forEach((pos) => {
+		data[pos] += 1;
+	});
 
 	return (
 		<div className="flex gap-2">
-			{sortedPositions.map(([pos, count]) => (
+			{Object.entries(data).map(([pos, count]) => (
 				<div
 					className="size-8 relative overflow-hidden rounded flex items-center justify-center"
 					key={pos}
