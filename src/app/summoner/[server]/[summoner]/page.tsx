@@ -46,13 +46,16 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<main className="relative">
-			<div className="absolute top-0 md:top-2 left-0 right-0 w-full -z-10 fadein">
+			<div
+				className="absolute top-0 md:top-2 left-0 right-0 w-full -z-10 fadein"
+				id="splash"
+			>
 				<img
 					src={splash}
 					alt="champion splash"
 					className="w-full h-full object-cover dark:opacity-30 md:rounded-2xl"
 				/>
-				<div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t dark:from-slate-900 dark:to-transparent from-slate-200 to-slate-200/75" />
+				<div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t dark:from-slate-900 dark:via-slate-900/75 dark:to-slate-900/25 from-slate-200 to-slate-200/75" />
 			</div>
 			<div className="my-2 flex gap-2 max-md:py-8">
 				<SummonerProfile
@@ -76,13 +79,13 @@ export default async function Page({ params }: Props) {
 			<div className="lg:grid grid-cols-8 gap-8 max-lg:space-y-4 mt-4">
 				<div className="space-y-4 col-span-3 w-full">
 					<SummonerLeague summoner_id={summonerData.id} server={riotServer} />
+					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
 					<Suspense>
 						<Summary puuid={summonerData.puuid} region={region} page={1} />
 					</Suspense>
 					{/* <section>
 						<h2>Points graph</h2>
 					</section> */}
-					<SummonerMastery puuid={summonerData.puuid} server={riotServer} />
 					<Suspense>
 						<Recently
 							puuid={summonerData.puuid}
